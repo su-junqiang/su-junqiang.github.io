@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[linux]]></title>
+    <url>%2F2019%2F01%2F08%2Flinux%26%26jdk%26%26mysql%2F</url>
+    <content type="text"></content>
+  </entry>
+  <entry>
+    <title><![CDATA[linux安装jdk1.8&&设置Tomcat为开机启动服务&&MySQL外网访问]]></title>
+    <url>%2F2019%2F01%2F01%2Flinux%2F</url>
+    <content type="text"><![CDATA[linux安装jdk1.8解压jdk安装包：附上jdk1.8的下载地址：http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html 将jdk-8u192-linux-x64.tar.gz下载到本地用xftp将其上传至xshell中自己指定的下载目录 使用以下命令将其解压 1tar -zxvf jdk1.8.0_191.tar.gz //解压安装包到当前文件夹 mv jdk1.8.0_191 java1.8 //重命名 之后配置一下环境变量。 编辑/etc/下的profile文件，配置环境变量 1sudo vi /etc/profile // 到profile配置环境变量 在profile文件添加以下内容 1export JAVA_HOME=/root/server/jdk1.8 //jdk1.8的目录 export JRE_HOME=$&#123;JAVA_HOME&#125;/jre export CLASSPATH=.:$&#123;JAVA_HOME&#125;/lib:$&#123;JRE_HOME&#125;/lib export PATH=$&#123;JAVA_HOME&#125;/bin:$PATH 之后保存并退出文件之后在控制台输入Java 和 Java -version 看有没有信息输出，如下： 1java -version java version "1.8.0_191" //版本号 Java(TM) SE Runtime Environment (build 1.8.0_191-b12) Java HotSpot(TM) 64-Bit Server VM (build 25.191-b12, mixed mode) 能显示以上信息，就说明jdk安装成功啦 linux设置Tomcat为开机启动服务解压tomcat安装包附上tomcat8的下载地址https://tomcat.apache.org/download-80.cgi 将tar.gz (pgp, sha512)下载到本地用xftp将其上传至xshell中自己指定的下载目录 使用以下命令将其解压 12tar -zxvf apache-tomcat-8.5.35.tar.gz //解压安装包到当前文件夹 mv apache-tomcat-8.5.35 tomcat8 //重命名 将tomcat安装目录下bin文件夹中的catalina.sh拷贝到/etc/init.d下并修改名称为tomcat 12cp /tomcat8/bin/catalina.sh /etc/init.d/ mv /etc/init.d/catalina.sh tomcat //将服务重命名为tomcat 分别执行上面三条命令，如果提示错误在开头加上sudo，然后配置/etc/init.d/tomcat添加以下内容 12CATALINA_HOME=/root/server/tomcat8 //tomcat8的目录 JAVA_HOME=/root/server/jdk1.8 //jdk1.8的目录 CLASSPATH=.:$&#123;JAVA_HOME&#125;/lib:$CATALINA_HOME/lib 之后保存并退出文件之后进行添加开机自启服务 123apt install sysv-rc-conf //首先安装sysv-rc-conf update-rc.d –f tomcat remove sysv-rc-conf tomcat on sysv-rc-conf tomcat --list 重启 12reboot netstat -ntlp //查看端口8080是否启动 linux设置MySQL外网访问 通过apt-get安装mysql 123sudo apt-get install mysql-server apt-get install mysql-client apt-get install mysql-client 进入MySQL配置允许外网访问 123mysql -uroot -p //输入密码 use mysql select host,user from user; 实现远程连接(授权法)将host字段的值改为%就表示在任何客户端机器上能以root用户登录到mysql服务器，建议在开发时设为%。 1update user set host='%' where user='root'; flush privileges; 授权用户 任意主机以用户root和密码mypwd连接到mysql服务器 1GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'mypwd' WITH GRANT OPTION; flush privileges; IP为192.168.1.102的主机以用户myuser和密码mypwd连接到mysql服务器 1GRANT ALL PRIVILEGES ON *.* TO 'myuser'@'192.168.1.102' IDENTIFIED BY 'mypwd' WITH GRANT OPTION; mysql&gt; flush privileges;]]></content>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[不同的 SQL JOIN]]></title>
     <url>%2F2018%2F12%2F29%2FSql%26%26Join%2F</url>
     <content type="text"><![CDATA[INNER JOIN内连接是最常见的一种连接，只连接匹配的行。 inner join语法 1select column_name(s) from table 1 INNER JOIN table 2 ON table 1.column_name=table 2.column_name 注释：INNER JOIN与JOIN是相同 INNER JOIN产生的结果集中，是1和2的交集。 LEFT JOIN返回左表的全部行和右表满足ON条件的行，如果左表的行在右表中没有匹配，那么这一行右表中对应数据用NULL代替。 LEFT JOIN 语法 1select column_name(s) from table 1 LEFT JOIN table 2 ON table 1.column_name=table 2.column_name 注释：在某些数据库中，LEFT JOIN 称为LEFT OUTER JOIN LEFT JOIN产生表1的完全集，而2表中匹配的则有值，没有匹配的则以null值取代。 RIGHT JOINRIGHT JOIN返回右表的全部行和左表满足ON条件的行，如果右表的行在左表中没有匹配，那么这一行左表中对应数据用NULL代替。 RIGHT JOIN语法 1select column_name(s) from table 1 RIGHT JOIN table 2 ON table 1.column_name=table 2.column_name 注释：在某些数据库中，RIGHT JOIN 称为RIGHT OUTER JOIN RIGHT JOIN产生表2的完全集，而1表中匹配的则有值，没有匹配的则以null值取代。 FULL JOIN会从左表 和右表 那里返回所有的行。如果其中一个表的数据行在另一个表中没有匹配的行，那么对面的数据用NULL代替 FULL OUTER JOIN语法 1select column_name(s) from table 1 FULL OUTER JOIN table 2 ON table 1.column_name=table 2.column_name FULL OUTER JOIN产生1和2的并集。但是需要注意的是，对于没有匹配的记录，则会以null做为值。]]></content>
