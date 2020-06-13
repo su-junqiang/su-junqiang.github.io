@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#fff">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-flash.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon-16x16-next.png?v=5.1.4" color="#fff">
+
+
+
+
+
+  <meta name="keywords" content="Rust,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="初识RustRust简介Rust是由Mozilla主导开发的通用、编译型编程语言。 设计准则为“安全、并发、实用”，支持函数式、並行式、程序式以及面向对象的编程风格 ， 它有着惊人的运行速度（有些领域甚至超过 C/C++），能够防止运行错误，并保证线程安全。RUST 语言使每个人都能够构建可靠、高效的软件。   为了实现安全、速度和斌发行，它没有采用垃圾回收机制（GC）。这让它在其它语言并不擅长的">
+<meta name="keywords" content="Rust">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识Rust">
+<meta property="og:url" content="https:su-junqiang.github.io/2020/06/13/记一次Rust初学历程/index.html">
+<meta property="og:site_name" content="-,-Reality-.">
+<meta property="og:description" content="初识RustRust简介Rust是由Mozilla主导开发的通用、编译型编程语言。 设计准则为“安全、并发、实用”，支持函数式、並行式、程序式以及面向对象的编程风格 ， 它有着惊人的运行速度（有些领域甚至超过 C/C++），能够防止运行错误，并保证线程安全。RUST 语言使每个人都能够构建可靠、高效的软件。   为了实现安全、速度和斌发行，它没有采用垃圾回收机制（GC）。这让它在其它语言并不擅长的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://39.105.124.102/group1/M00/00/02/rBFhYl7kre6AZoFxAAAMc-Fkx5c232.png">
+<meta property="og:image" content="http://39.105.124.102/group1/M00/00/02/rBFhYl7krjSAamQBAADlpnu-_ik578.png">
+<meta property="og:image" content="http://39.105.124.102/group1/M00/00/02/rBFhYl7krp2AcLgEAAAq_JhoGt8984.png">
+<meta property="og:image" content="http://39.105.124.102/group1/M00/00/02/rBFhYl7krrSAL-XtAAEOVJ5VGJ0451.png">
+<meta property="og:image" content="http://39.105.124.102/group1/M00/00/02/rBFhYl7krsSAZI1ZAAD1pjmYI2E637.png">
+<meta property="og:image" content="http://39.105.124.102/group1/M00/00/02/rBFhYl7krtCABWx7AAD3Sr7g5Co441.png">
+<meta property="og:image" content="http://39.105.124.102/group1/M00/00/02/rBFhYl7krt6APqoLAAChOpiDFFg583.png">
+<meta property="og:image" content="http://39.105.124.102/group1/M00/00/02/rBFhYl7kr0aARNhyAAB6Yld6uas443.png">
+<meta property="og:image" content="http://39.105.124.102/group1/M00/00/02/rBFhYl7krv6AbmsxAABR58q3Tvs168.png">
+<meta property="og:image" content="http://39.105.124.102/group1/M00/00/02/rBFhYl7krz-AScTIAABBbLEmNfE426.png">
+<meta property="og:updated_time" content="2020-06-13T11:21:09.302Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="初识Rust">
+<meta name="twitter:description" content="初识RustRust简介Rust是由Mozilla主导开发的通用、编译型编程语言。 设计准则为“安全、并发、实用”，支持函数式、並行式、程序式以及面向对象的编程风格 ， 它有着惊人的运行速度（有些领域甚至超过 C/C++），能够防止运行错误，并保证线程安全。RUST 语言使每个人都能够构建可靠、高效的软件。   为了实现安全、速度和斌发行，它没有采用垃圾回收机制（GC）。这让它在其它语言并不擅长的">
+<meta name="twitter:image" content="http://39.105.124.102/group1/M00/00/02/rBFhYl7kre6AZoFxAAAMc-Fkx5c232.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"perspectiveLeftIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"perspectiveLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https:su-junqiang.github.io/2020/06/13/记一次Rust初学历程/">
+
+
+
+
+
+  <title>初识Rust | -,-Reality-.</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?118ee71272155728d31d50c2cbbf5bd4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+ <script>
+class Circle {
+    //创建对象
+    //以一个圆为对象
+    //设置随机的 x，y坐标，r半径，_mx，_my移动的距离
+    //this.r是创建圆的半径，参数越大半径越大
+    //this._mx,this._my是移动的距离，参数越大移动
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.r = Math.random() * 10 ;
+        this._mx = Math.random() ;
+        this._my = Math.random() ;
+
+    }
+
+    //canvas 画圆和画直线
+    //画圆就是正常的用canvas画一个圆
+    //画直线是两个圆连线，为了避免直线过多，给圆圈距离设置了一个值，距离很远的圆圈，就不做连线处理
+    drawCircle(ctx) {
+        ctx.beginPath();
+        //arc() 方法使用一个中心点和半径，为一个画布的当前子路径添加一条弧。
+        ctx.arc(this.x, this.y, this.r, 0, 360)
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(204, 204, 204, 0.3)';
+        ctx.fill();
+    }
+
+    drawLine(ctx, _circle) {
+        let dx = this.x - _circle.x;
+        let dy = this.y - _circle.y;
+        let d = Math.sqrt(dx * dx + dy * dy)
+        if (d < 150) {
+            ctx.beginPath();
+            //开始一条路径，移动到位置 this.x,this.y。创建到达位置 _circle.x,_circle.y 的一条线：
+            ctx.moveTo(this.x, this.y);   //起始点
+            ctx.lineTo(_circle.x, _circle.y);   //终点
+            ctx.closePath();
+            ctx.strokeStyle = 'rgba(204, 204, 204, 0.3)';
+            ctx.stroke();
+        }
+    }
+
+    // 圆圈移动
+    // 圆圈移动的距离必须在屏幕范围内
+    move(w, h) {
+        this._mx = (this.x < w && this.x > 0) ? this._mx : (-this._mx);
+        this._my = (this.y < h && this.y > 0) ? this._my : (-this._my);
+        this.x += this._mx / 2;
+        this.y += this._my / 2;
+    }
+}
+//鼠标点画圆闪烁变动
+class currentCirle extends Circle {
+    constructor(x, y) {
+        super(x, y)
+    }
+
+    drawCircle(ctx) {
+        ctx.beginPath();
+        //注释内容为鼠标焦点的地方圆圈半径变化
+        //this.r = (this.r < 14 && this.r > 1) ? this.r + (Math.random() * 2 - 1) : 2;
+        this.r = 8;
+        ctx.arc(this.x, this.y, this.r, 0, 360);
+        ctx.closePath();
+        //ctx.fillStyle = 'rgba(0,0,0,' + (parseInt(Math.random() * 100) / 100) + ')'
+        ctx.fillStyle = 'rgba(255, 77, 54, 0.3)'
+        ctx.fill();
+
+    }
+}
+//更新页面用requestAnimationFrame替代setTimeout
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
+let canvas = document.getElementById('canvas');
+let ctx = canvas.getContext('2d');
+let w = canvas.width = canvas.offsetWidth;
+let h = canvas.height = canvas.offsetHeight;
+let circles = [];
+let current_circle = new currentCirle(0, 0)
+
+let draw = function () {
+    ctx.clearRect(0, 0, w, h);
+    for (let i = 0; i < circles.length; i++) {
+        circles[i].move(w, h);
+        circles[i].drawCircle(ctx);
+        for (j = i + 1; j < circles.length; j++) {
+            circles[i].drawLine(ctx, circles[j])
+        }
+    }
+    if (current_circle.x) {
+        current_circle.drawCircle(ctx);
+        for (var k = 1; k < circles.length; k++) {
+            current_circle.drawLine(ctx, circles[k])
+        }
+    }
+    requestAnimationFrame(draw)
+}
+
+let init = function (num) {
+    for (var i = 0; i < num; i++) {
+        circles.push(new Circle(Math.random() * w, Math.random() * h));
+    }
+    draw();
+}
+window.addEventListener('load', init(60));
+window.onmousemove = function (e) {
+    e = e || window.event;
+    current_circle.x = e.clientX;
+    current_circle.y = e.clientY;
+}
+window.onmouseout = function () {
+    current_circle.x = null;
+    current_circle.y = null;
+
+};
+</script>
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  
+  
+  
+    
+  
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">-,-Reality-.</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">他妈了个巴子</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https:su-junqiang.github.io/2020/06/13/记一次Rust初学历程/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="苏俊强">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://user-images.githubusercontent.com/45387793/49084566-c89de600-f28a-11e8-84d5-d7bfcad467e8.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="-,-Reality-.">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">初识Rust</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-13T19:06:39+08:00">
+                2020-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Rust/" itemprop="url" rel="index">
+                    <span itemprop="name">Rust</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/06/13/记一次Rust初学历程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/06/13/记一次Rust初学历程/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+		
+             <span id="/2020/06/13/记一次Rust初学历程/" class="leancloud_visitors" data-flag-title="初识Rust">
+			   <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count">
+				</span>
+				
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4.9k
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="初识Rust"><a href="#初识Rust" class="headerlink" title="初识Rust"></a>初识Rust</h1><h2 id="Rust简介"><a href="#Rust简介" class="headerlink" title="Rust简介"></a>Rust简介</h2><p>Rust是由Mozilla主导开发的通用、编译型编程语言。 设计准则为“安全、并发、实用”，支持函数式、並行式、程序式以及面向对象的编程风格 ， 它有着惊人的运行速度（有些领域甚至超过 C/C++），能够防止运行错误，并保证线程安全。RUST 语言使每个人都能够构建可靠、高效的软件。 </p>
+<p><img src="http://39.105.124.102/group1/M00/00/02/rBFhYl7kre6AZoFxAAAMc-Fkx5c232.png" alt="下载.png"></p>
+<p>为了实现安全、速度和斌发行，它没有采用垃圾回收机制（GC）。这让它在其它语言并不擅长的场景中大展身手： 嵌入到其它语言中、在特定的时间和空间要求下编程、编写例如设备驱动和操作系统这样的底层代码。它通过一系列不产生运行时开销的编译时安全检查来提升目前语言所关注的领域，同时消除一切数据竞争。Rust 还致力于实现“零开销抽象”，虽然有些抽象看起来更像一个高级语言的特性。即便如此，你仍然可以使用 Rust 来做一些底层的精准控制。 </p>
+<h2 id="学习工具集"><a href="#学习工具集" class="headerlink" title="学习工具集"></a>学习工具集</h2><p><img src="http://39.105.124.102/group1/M00/00/02/rBFhYl7krjSAamQBAADlpnu-_ik578.png" alt="1592015058904.png"></p>
+<table>
+<thead>
+<tr>
+<th>学习网址</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.rust-lang.org/" target="_blank" rel="noopener">https://www.rust-lang.org/</a></td>
+<td>官网</td>
+</tr>
+<tr>
+<td><a href="https://crates.io/" target="_blank" rel="noopener">https://crates.io/</a></td>
+<td>包管理平台</td>
+</tr>
+<tr>
+<td><a href="https://docs.rs/" target="_blank" rel="noopener">https://docs.rs/</a></td>
+<td>文档中心</td>
+</tr>
+<tr>
+<td><a href="https://kaisery.github.io/trpl-zh-cn/" target="_blank" rel="noopener">https://kaisery.github.io/trpl-zh-cn/</a></td>
+<td>中文电子书</td>
+</tr>
+</tbody>
+</table>
+<h2 id="入门指南"><a href="#入门指南" class="headerlink" title="入门指南"></a>入门指南</h2><h3 id="在Windows上安装"><a href="#在Windows上安装" class="headerlink" title="在Windows上安装"></a>在Windows上安装</h3><p>首先，需要安装最新版的 Rust 编译工具和 Visual Studio Code，具体编译工具以及Vs code安装教程自行百度。</p>
+<p>Rust 编译工具：<a href="https://www.rust-lang.org/zh-CN/tools/install" target="_blank" rel="noopener">https://www.rust-lang.org/zh-CN/tools/install</a></p>
+<p>Rust 的编译工具依赖 C 语言的编译工具，这意味着你的电脑上至少已经存在一个 C 语言的编译环境。如果你使用的是 Linux 系统，往往已经具备了 GCC 或 clang。如果你使用的是 macOS，需要安装 Xcode。如果你是用的是 Windows 操作系统，你需要安装 Visual Studio 2013 或以上的环境（需要 C/C++ 支持）以使用 MSVC 或安装 MinGW + GCC 编译环境（Cygwin 还没有测试）。</p>
+<h3 id="Hello，World！"><a href="#Hello，World！" class="headerlink" title="Hello，World！"></a>Hello，World！</h3><p>接下来，新建一个源文件，命名为 <em>main.rs</em>。Rust 源文件总是以 <em>.rs</em> 扩展名结尾。如果文件名包含多个单词，使用下划线分隔它们。例如命名为 <em>hello_world.rs</em>，而不是 <em>helloworld.rs</em>。</p>
+<p>现在打开刚创建的 <em>main.rs</em> 文件，输入示例 代码。</p>
+<p>文件名: main.rs</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"Hello, world!"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>保存文件，并回到终端窗口。在 Linux 或 macOS 上，输入如下命令，编译并运行文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ rustc main.rs</span><br><span class="line">$ ./main</span><br><span class="line">Hello, world!</span><br></pre></td></tr></table></figure>
+<p>在 Windows 上，输入命令 <code>.\main.exe</code>，而不是 <code>./main</code>：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; rustc main.rs</span><br><span class="line">&gt; .\main.exe</span><br><span class="line">Hello, world!</span><br></pre></td></tr></table></figure>
+<p>不管使用何种操作系统，终端应该打印字符串 <code>Hello, world!</code>。</p>
+<p>如果出现以下错误提示，需要在 windows平台上先安装 Microsoft C++ build tools</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">error: linker `link.exe` not found</span><br><span class="line">  |</span><br><span class="line">  = note: 系统找不到指定的文件。 (os error <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">note: the msvc targets depend on the msvc linker but `link.exe` was not found</span><br><span class="line"></span><br><span class="line">note: please ensure that VS <span class="number">2013</span>, VS <span class="number">2015</span>, VS <span class="number">2017</span> or VS <span class="number">2019</span> was installed with the Visual C++ option</span><br><span class="line"></span><br><span class="line">error: aborting due to previous error</span><br></pre></td></tr></table></figure>
+<p>点击 <a href="https://download.microsoft.com/download/5/f/7/5f7acaeb-8363-451f-9425-68a90f98b238/visualcppbuildtools_full.exe" target="_blank" rel="noopener">Microsoft C++ build tools</a>，进行下载安装。</p>
+<h3 id="搭建-Visual-Studio-Code-开发环境"><a href="#搭建-Visual-Studio-Code-开发环境" class="headerlink" title="搭建 Visual Studio Code 开发环境"></a>搭建 Visual Studio Code 开发环境</h3><p>Visual Studio Code：<a href="https://code.visualstudio.com/Download" target="_blank" rel="noopener">https://code.visualstudio.com/Download</a></p>
+<p>下载完 Visual Studio Code 安装包之后启动安装向导安装（此步骤不在此赘述）。</p>
+<p>安装完 Visual Studio Code （下文简称 VSCode）之后运行 VSCode。使用快捷键ctrl+p ，输入内容 ext 后空格，按下Enter</p>
+<p><img src="http://39.105.124.102/group1/M00/00/02/rBFhYl7krp2AcLgEAAAq_JhoGt8984.png" alt="1592022620924.png"></p>
+<p>拓展搜索框输入Chinese，安装简体中文扩展，使界面变成中文。<br><img src="http://39.105.124.102/group1/M00/00/02/rBFhYl7krrSAL-XtAAEOVJ5VGJ0451.png" alt="Chinese.png"></p>
+<p>用同样的方法安装  rls 和 Native Debug 两个扩展。 </p>
+<p><img src="http://39.105.124.102/group1/M00/00/02/rBFhYl7krsSAZI1ZAAD1pjmYI2E637.png" alt="rsl.png"><br><img src="http://39.105.124.102/group1/M00/00/02/rBFhYl7krtCABWx7AAD3Sr7g5Co441.png" alt="Native.png"></p>
+<p> 重新启动 VSCode，Rust 的开发环境就搭建好了。 </p>
+<p>在D盘目录下创建Rust Workspace文件夹， 在 VSCode 中打开新建的文件夹： </p>
+<p><img src="http://39.105.124.102/group1/M00/00/02/rBFhYl7krt6APqoLAAChOpiDFFg583.png" alt="file.png"></p>
+<p>打开新的终端</p>
+<p><img src="http://39.105.124.102/group1/M00/00/02/rBFhYl7kr0aARNhyAAB6Yld6uas443.png" alt="3"></p>
+<p>在终端中输入命令：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cargo new greeting</span><br></pre></td></tr></table></figure>
+<p> 当前文件下下会构建一个名叫 greeting 的 Rust 工程目录。<br><img src="http://39.105.124.102/group1/M00/00/02/rBFhYl7krv6AbmsxAABR58q3Tvs168.png" alt="工程目录.png"></p>
+<p> 现在在终端里输入以下三个命令 ：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ./greeting </span><br><span class="line">cargo build </span><br><span class="line">cargo run</span><br></pre></td></tr></table></figure>
+<p> 系统在创建工程时会生成一个 Hello, world 源程序 main.rs，这时会被编译并运行： </p>
+<p><img src="http://39.105.124.102/group1/M00/00/02/rBFhYl7krz-AScTIAABBbLEmNfE426.png" alt="编译.png"></p>
+<h2 id="猜猜看游戏帮助入门"><a href="#猜猜看游戏帮助入门" class="headerlink" title="猜猜看游戏帮助入门"></a>猜猜看游戏帮助入门</h2><h3 id="获取用户输入内容"><a href="#获取用户输入内容" class="headerlink" title="获取用户输入内容"></a>获取用户输入内容</h3><p>首先在刚才创建的工程下的main.rs下输入以下示例代码：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::io;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> hello=<span class="built_in">String</span>::from(<span class="string">"Hello,World! Hello, Rust!"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,hello);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"Guess the number !"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"Please input your guess."</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> guess=<span class="built_in">String</span>::new();</span><br><span class="line">    io::stdin().read_line(&amp;<span class="keyword">mut</span> guess)</span><br><span class="line">        .expect(<span class="string">"Failed to read line"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"You guessed: &#123;&#125;"</span>,guess);</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来我们分析代码中的信息，猜猜看游戏的主要操作是用户提供输入，控制台反馈用户所猜的内容，那么我们需要将<code>io</code>（输入/输出）库引入到当前的作用域，其中<code>io</code>库来自标准库（也被称作<code>std</code>）Rust将少量的类型引入到每个程序的作用域中，如果需要的类型不在模块中需要使用到<code>use</code>语句来显式的将其引入作用域。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::id;</span><br></pre></td></tr></table></figure>
+<p>接下来 <code>main</code>函数是程序的入口点：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span>（）&#123;</span></span><br></pre></td></tr></table></figure>
+<p>其中<code>fn</code>用来声明一个新的函数，<code>（）</code>表明没有参数，<code>{</code>作为函数体的开始。</p>
+<p>之后一系列的<code>println!</code>表示是一个在屏幕上打印字符串的<a href="[https://baike.baidu.com/item/%E5%AE%8F/2648286](https://baike.baidu.com/item/宏/2648286">宏</a> ):</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">println!</span>(<span class="string">"Hello, world!"</span>);</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"Guess the number !"</span>);</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"Please input your guess."</span>);</span><br></pre></td></tr></table></figure>
+<p>这些代码用于在控制台打印，提示并介绍游戏内容供用户输入。接下来创建一个存储用户输入的地方，像这样：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> guess=<span class="built_in">String</span>::new();</span><br></pre></td></tr></table></figure>
+<p>我们可以看到这是一个<code>let</code>语句，用来创建<strong><em>变量</em></strong> （variable）。之所以<code>let</code>后面多了一个修饰词<code>mut</code>,是因为 在 Rust 中，变量默认是不可变的，在变量名前使用 <code>mut</code> 来使一个变量可变： </p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="number">5</span>; <span class="comment">// 不可变</span></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> b = <span class="number">5</span>; <span class="comment">// 可变</span></span><br></pre></td></tr></table></figure>
+<p>让我们回到猜猜看程序中。现在我们知道了 <code>let mut guess</code> 会引入一个叫做 <code>guess</code> 的可变变量。等号（<code>=</code>）的右边是 <code>guess</code> 所绑定的值，它是 <code>String::new</code> 的结果，这个函数会返回一个 <code>String</code> 的新实例。<code>String</code>是一个标准库提供的字符串类型，它是 UTF-8 编码的可增长文本块。</p>
+<p><code>::new</code> 那一行的 <code>::</code> 语法表明 <code>new</code> 是 <code>String</code> 类型的一个 <strong>关联函数</strong>（<em>associated function</em>）。关联函数是针对类型实现的，在这个例子中是 <code>String</code>，而不是 <code>String</code> 的某个特定实例。一些语言中把它称为 <strong>静态方法</strong>（<em>static method</em>）。<code>new</code> 函数创建了一个新的空字符串，你会发现很多类型上有 <code>new</code> 函数，因为它是创建类型实例的惯用函数名。</p>
+<p>总结一下，<code>let mut guess = String::new();</code> 这一行创建了一个可变变量，当前它绑定到一个新的 <code>String</code> 空实例上，接下来我们需要做的是获取到用户从键盘上输入的变量，于是调用<code>io</code>库中的<code>stdin</code>函数：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">io::stdin().read_line(&amp;<span class="keyword">mut</span> guess)</span><br><span class="line">    .expect(<span class="string">"Failed to read line"</span>);</span><br></pre></td></tr></table></figure>
+<p>如果未在程序开头声明将<code>io</code>库引入到程序中此时的<code>io::stdin()</code>应该替换为<code>std::io::stdin()</code>。代码的下一部分<code>.readline(&amp;mut guess)</code>方法从标准输入句柄中获取用户输入，我们还想<code>read_line</code>传递了一个参数：<code>&amp;mut guess</code>。由于<code>read_line</code>是无论用户在标准输入中输入什么内容，它都会将其存入到一个字符串中，所以它需要字符串作为参数，并且由于是通过用户键入赋值，所以将其设置为可变的。 <code>&amp;</code> 表示这个参数是一个 <strong>引用</strong>（<em>reference</em>），它允许多处代码访问同一处数据，而无需在内存中多次拷贝。引用是一个复杂的特性，Rust 的一个主要优势就是安全而简单的操纵引用。完成当前程序并不需要了解如此多细节。现在，我们只需知道它像变量一样，默认是不可变的。因此，需要写成 <code>&amp;mut guess</code> 来使其可变，而不是 <code>&amp;guess</code>。 </p>
+<p>接下来的代码是使用 <code>println!</code> 占位符进行打印值</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">println!</span>(<span class="string">"You guessed: &#123;&#125;"</span>, guess);</span><br></pre></td></tr></table></figure>
+<p>这行代码打印存储用户输入的字符串。第一个参数是格式化字符串，里面的 <code>{}</code> 是预留在特定位置的占位符。使用 <code>{}</code> 也可以打印多个值：第一对 <code>{}</code> 使用格式化字符串之后的第一个值，第二对则使用第二个值，依此类推。调用一次 <code>println!</code> 打印多个值看起来像这样：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="number">10</span>;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"x = &#123;&#125; and y = &#123;&#125;"</span>, x, y);</span><br></pre></td></tr></table></figure>
+<p>这行代码会打印出 <code>x = 5 and y = 10</code>。当然也有更好的写法：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="number">10</span>;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"x = &#123;0&#125; and y = &#123;1&#125;"</span>, x, y);</span><br></pre></td></tr></table></figure>
+<p>在 <code>{}</code> 之间可以放一个数字，它将把之后的可变参数当作一个数组来访问，下标从<code>0</code> 开始。</p>
+<p>如果要输出 <code>{</code>或 <code>}</code>怎么办呢？格式字符串中通过<code></code>分别转义代表 <code>{</code> 和 <code>}</code>。但是其他常用转义字符与 C 语言里的转义字符一样，都是反斜杠开头的形式。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123; </span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#123;&#125;&#125;"</span>); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="生成一个秘密数字"><a href="#生成一个秘密数字" class="headerlink" title="生成一个秘密数字"></a>生成一个秘密数字</h3><p> 接下来，需要生成一个秘密数字，好让用户来猜。秘密数字应该每次都不同，这样重复玩才不会乏味；范围应该在 1 到 100 之间，这样才不会太困难。Rust 标准库中尚未包含随机数功能。然而，Rust 团队还是提供了一个 <code>rand</code>库。 在我们使用 <code>rand</code> 编写代码之前，需要修改 <em>Cargo.toml</em> 文件，引入一个 <code>rand</code> 依赖。现在打开这个文件并在底部的 <code>[dependencies]</code> 片段标题之下添加： </p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[dependencies]</span></span><br><span class="line"></span><br><span class="line"><span class="attr">rand</span> = <span class="string">"0.5.5"</span></span><br></pre></td></tr></table></figure>
+<p>在 <em>Cargo.toml</em> 文件中，标题以及之后的内容属同一个片段，直到遇到下一个标题才开始新的片段。<code>[dependencies]</code> 片段告诉 Cargo 本项目依赖了哪些外部 crate 及其版本。本例中，我们使用语义化版本 <code>0.5.5</code> 来指定 <code>rand</code> 库。Cargo 理解语义化版本（Semantic Versioning）（有时也称为 <em>SemVer</em>），这是一种定义版本号的标准。<code>0.5.5</code> 事实上是 <code>^0.5.5</code> 的简写，它表示 “任何与 0.5.5 版本公有 API 相兼容的版本”。现在，不修改任何代码，构建项目，这时候的控制面板可能卡在<code>Blocking waiting for file lock on package cache</code>通过百度查询建议可以设置cargo用的镜像：在你的CARGO_HOME目录下(默认是<code>~/.cargo</code>)建立一个名叫<code>config</code>没有扩展名【切记，没有扩展名！】的文件，内容如下：（有人的网络环境受限，没有办法以git协议访问外网，请把下一行里的<code>git://</code>换成<code>https://</code>或者<code>http://</code>）</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[source.crates-io]</span></span><br><span class="line"><span class="attr">registry</span> = <span class="string">"https://github.com/rust-lang/crates.io-index"</span></span><br><span class="line"><span class="attr">replace-with</span> = <span class="string">'tuna'</span></span><br><span class="line"><span class="section">[source.tuna]</span></span><br><span class="line"><span class="attr">registry</span> = <span class="string">"https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git"</span></span><br></pre></td></tr></table></figure>
+<p>验证：在命令行中运行 cargo install cargo-release，会成功安装一个小程序，第一次下载的时候会很慢，因为有大约四百兆的初始索引数据要下载。 现在，不修改任何代码，构建项目 :</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ cargo build</span><br><span class="line">    Updating crates.io index</span><br><span class="line">  Downloaded rand v0.<span class="number">5.5</span></span><br><span class="line">  Downloaded libc v0.<span class="number">2.62</span></span><br><span class="line">  Downloaded rand_core v0.<span class="number">2.2</span></span><br><span class="line">  Downloaded rand_core v0.<span class="number">3.1</span></span><br><span class="line">  Downloaded rand_core v0.<span class="number">4.2</span></span><br><span class="line">   Compiling rand_core v0.<span class="number">4.2</span></span><br><span class="line">   Compiling libc v0.<span class="number">2.62</span></span><br><span class="line">   Compiling rand_core v0.<span class="number">3.1</span></span><br><span class="line">   Compiling rand_core v0.<span class="number">2.2</span></span><br><span class="line">   Compiling rand v0.<span class="number">5.5</span></span><br><span class="line">   Compiling guessing_game v0.<span class="number">1.0</span> (file:///projects/guessing_game)</span><br><span class="line">    Finished dev [unoptimized + debuginfo] target(s) <span class="keyword">in</span> <span class="number">2.53</span> s</span><br></pre></td></tr></table></figure>
+<p><em>Cargo.lock</em> 文件确保构建是可重现的,这个问题的答案是 <em>Cargo.lock</em> 文件。它在第一次运行 <code>cargo build</code> 时创建，并放在 <em>guessing_game</em> 目录。当第一次构建项目时，Cargo 计算出所有符合要求的依赖版本并写入 <em>Cargo.lock</em> 文件。当将来构建项目时，Cargo 会发现 <em>Cargo.lock</em> 已存在并使用其中指定的版本，而不是再次计算所有的版本。这使得你拥有了一个自动化的可重现的构建。换句话说，项目会持续使用 <code>0.5.5</code> 直到你显式升级，多亏有了 <em>Cargo.lock</em> 文件。</p>
+<p>接下来更新main.rs生成随机数</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::io;</span><br><span class="line"><span class="keyword">use</span> rand::Rng;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> hello = <span class="built_in">String</span>::from(<span class="string">"Hello,World! Hello, Rust!"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, hello);</span><br><span class="line">    <span class="keyword">let</span> secret_number=rand::thread_rng().gen_range(<span class="number">1</span>,<span class="number">101</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"Guess the number !"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"Please input your guess."</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> guess = <span class="built_in">String</span>::new();</span><br><span class="line">    io::stdin()</span><br><span class="line">        .read_line(&amp;<span class="keyword">mut</span> guess)</span><br><span class="line">        .expect(<span class="string">"Failed to read line"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"You guessed: &#123;&#125;"</span>, guess);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"The secret number is: &#123;&#125;"</span>, secret_number);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先，我们新增了一行 <code>use</code>：<code>use rand::Rng</code>。<code>Rng</code> 是一个 trait，它定义了随机数生成器应实现的方法，想使用这些方法的话，此 trait 必须在作用域中。第十章会详细介绍 trait。</p>
+<p>接下来，我们在中间还新增加了两行。<code>rand::thread_rng</code> 函数提供实际使用的随机数生成器：它位于当前执行线程的本地环境中，并从操作系统获取 seed。接下来，调用随机数生成器的 <code>gen_range</code> 方法。这个方法由刚才引入到作用域的 <code>Rng</code> trait 定义。<code>gen_range</code> 方法获取两个数字作为参数，并生成一个范围在两者之间的随机数。它包含下限但不包含上限，所以需要指定 <code>1</code> 和 <code>101</code> 来请求一个 1 和 100 之间的数。 新增加的第二行代码打印出了秘密数字。 </p>
+<h3 id="比较输入、秘密数字"><a href="#比较输入、秘密数字" class="headerlink" title="比较输入、秘密数字"></a>比较输入、秘密数字</h3><p> 现在有了用户输入和一个随机数，我们可以比较它们。 </p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> *Rust 有一个静态强类型系统，同时也有类型推断。当我们写出 let guess = String::new() 时，</span></span><br><span class="line"><span class="comment"> *Rust 推断出 guess 应该是 String 类型，并不需要我们写出类型。另一方面，secret_number，</span></span><br><span class="line"><span class="comment"> *是数字类型。几个数字类型拥有 1 到 100 之间的值：32 位数字 i32；32 位无符号数字 u32；</span></span><br><span class="line"><span class="comment"> *64 位数字 i64 等等。Rust 默认使用 i32，所以它是 secret_number 的类型，除非增加类型信息，</span></span><br><span class="line"><span class="comment"> *或任何能让 Rust 推断出不同数值类型的信息，所以通过以下方法来转换为数字类型</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="keyword">let</span> guess: <span class="built_in">u32</span> = guess.trim().parse().expect(<span class="string">"Please type a number!"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">match</span> guess.cmp(&amp;secret_number) &#123;</span><br><span class="line">    Ordering::Less =&gt; <span class="built_in">println!</span>(<span class="string">"Too small!"</span>),</span><br><span class="line">    Ordering::Greater =&gt; <span class="built_in">println!</span>(<span class="string">"Too big!"</span>),</span><br><span class="line">    Ordering::Equal =&gt; <span class="built_in">println!</span>(<span class="string">"You win!"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 不过等等，不是已经有了一个叫做 <code>guess</code> 的变量了吗？确实如此，不过 Rust 允许用一个新值来 <strong>隐藏</strong> （<em>shadow</em>） <code>guess</code> 之前的值。这个功能常用在需要转换值类型之类的场景。它允许我们复用 <code>guess</code> 变量的名字，而不是被迫创建两个不同变量， 我们将 <code>guess</code> 绑定到 <code>guess.trim().parse()</code> 表达式上。表达式中的 <code>guess</code> 是包含输入的原始 <code>String</code> 类型。<code>String</code> 实例的 <code>trim</code> 方法会去除字符串开头和结尾的空白字符。<code>u32</code> 只能由数字字符转换，不过用户必须输入 enter 键才能让 <code>read_line</code> 返回，然而用户按下 enter 键时，会在字符串中增加一个换行（newline）符。例如，用户输入 5 并按下 enter，<code>guess</code> 看起来像这样：<code>5\n</code>。<code>\n</code> 代表 “换行”，回车键。<code>trim</code> 方法消除 <code>\n</code>，只留下 <code>5</code>。字符串的 <code>parse</code> 方法将字符串解析成数字。因为这个方法可以解析多种数字类型，因此需要告诉 Rust 具体的数字类型，这里通过 <code>let guess: u32</code> 指定。<code>guess</code> 后面的冒号（<code>:</code>）告诉 Rust 我们指定了变量的类型。Rust 有一些内建的数字类型；<code>u32</code> 是一个无符号的 32 位整型。对于不大的正整数来说，它是不错的类型，第三章还会讲到其他数字类型。另外，程序中的 <code>u32</code> 注解以及与 <code>secret_number</code> 的比较，意味着 Rust 会推断出 <code>secret_number</code> 也是 <code>u32</code> 类型。现在可以使用相同类型比较两个值了！</p>
+<p> <code>parse</code> 调用很容易产生错误。例如，字符串中包含 <code>A👍%</code>，就无法将其转换为一个数字。因此，<code>parse</code> 方法返回一个 <code>Result</code> 类型。像之前 “使用 <code>Result</code> 类型来处理潜在的错误“讨论的 <code>read_line</code> 方法那样，再次按部就班的用 <code>expect</code> 方法处理即可。如果 <code>parse</code> 不能从字符串生成一个数字，返回一个 <code>Result</code> 的 <code>Err</code> 成员时，<code>expect</code> 会使游戏崩溃并打印附带的信息。如果 <code>parse</code> 成功地将字符串转换为一个数字，它会返回 <code>Result</code> 的 <code>Ok</code> 成员，然后 <code>expect</code> 会返回 <code>Ok</code> 值中的数字 </p>
+<p> 现在游戏已经大体上能玩了，不过用户只能猜一次。增加一个循环来改变它吧！  <code>loop</code> 关键字创建了一个无限循环。将其加入后，用户可以反复猜测， 用户总能使用 ctrl-c 终止程序。 </p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">loop</span> &#123;</span><br><span class="line">       <span class="built_in">println!</span>(<span class="string">"Please input your guess."</span>);</span><br><span class="line">       <span class="keyword">let</span> <span class="keyword">mut</span> guess = <span class="built_in">String</span>::new();</span><br><span class="line">       <span class="comment">/*</span></span><br><span class="line"><span class="comment">        *获取用户输入</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">       io::stdin()</span><br><span class="line">           .read_line(&amp;<span class="keyword">mut</span> guess)</span><br><span class="line">           .expect(<span class="string">"Failed to read line"</span>);</span><br><span class="line">       <span class="comment">/*</span></span><br><span class="line"><span class="comment">        *Rust 有一个静态强类型系统，同时也有类型推断。当我们写出 let guess = String::new() 时，</span></span><br><span class="line"><span class="comment">        *Rust 推断出 guess 应该是 String 类型，并不需要我们写出类型。另一方面，secret_number，</span></span><br><span class="line"><span class="comment">        *是数字类型。几个数字类型拥有 1 到 100 之间的值：32 位数字 i32；32 位无符号数字 u32；</span></span><br><span class="line"><span class="comment">        *64 位数字 i64 等等。Rust 默认使用 i32，所以它是 secret_number 的类型，除非增加类型信息，</span></span><br><span class="line"><span class="comment">        *或任何能让 Rust 推断出不同数值类型的信息，所以通过以下方法来转换为数字类型</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">       <span class="keyword">let</span> guess: <span class="built_in">u32</span> = guess.trim().parse().expect(<span class="string">"Please type a number!"</span>);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">match</span> guess.cmp(&amp;secret_number) &#123;</span><br><span class="line">           Ordering::Less =&gt; <span class="built_in">println!</span>(<span class="string">"Too small!"</span>),</span><br><span class="line">           Ordering::Greater =&gt; <span class="built_in">println!</span>(<span class="string">"Too big!"</span>),</span><br><span class="line">           Ordering::Equal =&gt; <span class="built_in">println!</span>(<span class="string">"You win!"</span>),</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="built_in">println!</span>(<span class="string">"You guessed: &#123;&#125;"</span>, guess);</span><br><span class="line">       <span class="built_in">println!</span>(<span class="string">"The secret number is: &#123;&#125;"</span>, secret_number);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p> 让我们增加一个 <code>break</code> 语句，在用户猜对时退出游戏： </p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">match</span> guess.cmp(&amp;secret_number) &#123;</span><br><span class="line">          Ordering::Less =&gt; <span class="built_in">println!</span>(<span class="string">"Too small!"</span>),</span><br><span class="line">          Ordering::Greater =&gt; <span class="built_in">println!</span>(<span class="string">"Too big!"</span>),</span><br><span class="line">          Ordering::Equal =&gt; &#123;</span><br><span class="line">              <span class="built_in">println!</span>(<span class="string">"You win!"</span>);</span><br><span class="line">              <span class="keyword">break</span>;</span><br><span class="line">          &#125;,</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p> 通过在 <code>You win!</code> 之后增加一行 <code>break</code>，用户猜对了神秘数字后会退出循环。退出循环也意味着退出程序，因为循环是 <code>main</code> 的最后一部分。  </p>
+<h3 id="最终代码"><a href="#最终代码" class="headerlink" title="最终代码"></a>最终代码</h3><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> rand::Rng;</span><br><span class="line"><span class="keyword">use</span> std::cmp::Ordering;</span><br><span class="line"><span class="keyword">use</span> std::io;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> hello = <span class="built_in">String</span>::from(<span class="string">"Hello,World! Hello, Rust!"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, hello);</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     *生成随机数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">let</span> secret_number = rand::thread_rng().gen_range(<span class="number">1</span>, <span class="number">101</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"Guess the number !"</span>);</span><br><span class="line">    <span class="keyword">loop</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"Please input your guess."</span>);</span><br><span class="line">        <span class="keyword">let</span> <span class="keyword">mut</span> guess = <span class="built_in">String</span>::new();</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         *获取用户输入</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        io::stdin()</span><br><span class="line">            .read_line(&amp;<span class="keyword">mut</span> guess)</span><br><span class="line">            .expect(<span class="string">"Failed to read line"</span>);</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         *Rust 有一个静态强类型系统，同时也有类型推断。当我们写出 let guess = String::new() 时，</span></span><br><span class="line"><span class="comment">         *Rust 推断出 guess 应该是 String 类型，并不需要我们写出类型。另一方面，secret_number，</span></span><br><span class="line"><span class="comment">         *是数字类型。几个数字类型拥有 1 到 100 之间的值：32 位数字 i32；32 位无符号数字 u32；</span></span><br><span class="line"><span class="comment">         *64 位数字 i64 等等。Rust 默认使用 i32，所以它是 secret_number 的类型，除非增加类型信息，</span></span><br><span class="line"><span class="comment">         *或任何能让 Rust 推断出不同数值类型的信息，所以通过以下方法来转换为数字类型</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">let</span> guess: <span class="built_in">u32</span> = <span class="keyword">match</span> guess.trim().parse() &#123;</span><br><span class="line">            <span class="literal">Ok</span>(num) =&gt; num,</span><br><span class="line">            <span class="literal">Err</span>(_) =&gt; <span class="keyword">continue</span>,</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         *比较用户输入与随机生成</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">match</span> guess.cmp(&amp;secret_number) &#123;</span><br><span class="line">            Ordering::Less =&gt; <span class="built_in">println!</span>(<span class="string">"Too small!"</span>),</span><br><span class="line">            Ordering::Greater =&gt; <span class="built_in">println!</span>(<span class="string">"Too big!"</span>),</span><br><span class="line">            Ordering::Equal =&gt; &#123;</span><br><span class="line">                <span class="built_in">println!</span>(<span class="string">"You win!"</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"You guessed: &#123;&#125;"</span>, guess);</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"The secret number is: &#123;&#125;"</span>, secret_number);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本章通过简略介绍Rust、环境搭建以及动手实践，向你介绍了 Rust 新概念：<code>let</code>、<code>match</code>、方法、关联函数、使用外部 资源库 等等，这样我们就算初步认识Rust了为后续学习Rust打定了基础。</p>
+
+      
+    </div>
+    
+    
+    
+    <div>
+      
+      <div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">--------本文结束👻感谢您的阅读--------</div>
+
+</div>
+      
+    </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="苏俊强 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rust/" rel="tag"> <i class="fa fa-tag"></i> Rust</a>
+          
+        </div>
+      
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+		  <div style="color: rgba(0, 0, 0, 0.75); font-size:13px; letter-spacing:3px">(&gt;这里有小星星😘~&lt;)</div>
+            <div id="wpac-rating"></div>
+          </div>
+        
+        
+
+        
+        </div>
+      
+      
+
+      
+  <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+      
+    </div>
+
+    <span class="post-nav-divider"></span>
+
+    <div class="post-nav-prev post-nav-item">
+     
+       <a href="/2019/03/27/SpringBoot-Dubbo-Zookeper/" rel="next" title="Spring Boot+Dubbo+Zookeeper简单集成分布式">
+        Spring Boot+Dubbo+Zookeeper简单集成分布式 <i class="fa fa-chevron-right"></i>
+        </a>
+      
+    </div>
+  </div>
+
+
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+
+
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+			 <a href="/">
+			<img class="site-author-image" itemprop="image" src="https://user-images.githubusercontent.com/45387793/49084566-c89de600-f28a-11e8-84d5-d7bfcad467e8.JPG" alt="苏俊强">
+			 </a>
+            
+              <p class="site-author-name" itemprop="name">苏俊强</p>
+              <p class="site-description motion-element" itemprop="description">白天有说有笑，晚上睡个好觉。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.sujunqiang.work/" target="_blank" title="About-Me">
+                      
+                        <i class="fa fa-fw fa-user"></i>About-Me</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/su-junqiang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:809962111@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/u/5874170183/home?wvr=5" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://wpa.qq.com/msgrd?v=3&uin=809962111&site=qq&menu=yes" target="_blank" title="QQ">
+                      
+                        <i class="fa fa-fw fa-qq"></i>QQ</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.lichaobao.xyz" title="Chaobao" target="_blank">Chaobao</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://pushy.site" title="Pushy" target="_blank">Pushy</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sweetqianba.com:8080" title="Yuanhao" target="_blank">Yuanhao</a>
+                  </li>
+                
+				
+              </ul>
+            </div>
+          
+
+         <div id="days"></div>
+<script>
+function show_date_time(){
+window.setTimeout("show_date_time()", 1000);
+BirthDay=new Date("11/27/2018 00:00:00");
+today=new Date();
+timeold=(today.getTime()-BirthDay.getTime());
+sectimeold=timeold/1000
+secondsold=Math.floor(sectimeold);
+msPerDay=24*60*60*1000
+e_daysold=timeold/msPerDay
+daysold=Math.floor(e_daysold);
+e_hrsold=(e_daysold-daysold)*24;
+hrsold=setzero(Math.floor(e_hrsold));
+e_minsold=(e_hrsold-hrsold)*60;
+minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+seconds=setzero(Math.floor((e_minsold-minsold)*60));
+document.getElementById('days').innerHTML="已运行"+daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒";
+}
+function setzero(i){
+if (i<10)
+{i="0" + i};
+return i;
+}
+show_date_time();
+</script>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#初识Rust"><span class="nav-number">1.</span> <span class="nav-text">初识Rust</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Rust简介"><span class="nav-number">1.1.</span> <span class="nav-text">Rust简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习工具集"><span class="nav-number">1.2.</span> <span class="nav-text">学习工具集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#入门指南"><span class="nav-number">1.3.</span> <span class="nav-text">入门指南</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在Windows上安装"><span class="nav-number">1.3.1.</span> <span class="nav-text">在Windows上安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hello，World！"><span class="nav-number">1.3.2.</span> <span class="nav-text">Hello，World！</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搭建-Visual-Studio-Code-开发环境"><span class="nav-number">1.3.3.</span> <span class="nav-text">搭建 Visual Studio Code 开发环境</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#猜猜看游戏帮助入门"><span class="nav-number">1.4.</span> <span class="nav-text">猜猜看游戏帮助入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取用户输入内容"><span class="nav-number">1.4.1.</span> <span class="nav-text">获取用户输入内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成一个秘密数字"><span class="nav-number">1.4.2.</span> <span class="nav-text">生成一个秘密数字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#比较输入、秘密数字"><span class="nav-number">1.4.3.</span> <span class="nav-text">比较输入、秘密数字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最终代码"><span class="nav-number">1.4.4.</span> <span class="nav-text">最终代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+      
+    </div>
+	<div id="music163player">
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="280" height="86" src="//music.163.com/outchain/player?type=2&id=38358214&auto=0&height=66" "="">
+    </iframe>
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">苏俊强</span>
+
+  
+</div>
+
+<a style="color:black;ext-decoration:none;" href="http://www.beian.miit.gov.cn">晋ICP备18012846号</a>
+<div class="weixin-box">
+  <div class="weixin-menu">
+    <div class="weixin-hover">
+      <div class="weixin-description">微信扫一扫，关注本博主</div>
+    </div>
+  </div>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv"></span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.ui.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: '6g6SCRi3QCqKBoygYSBBKgTa-gzGzoHsz',
+        appKey: 'NisbShpRckxj9UIXxBbMJxwp',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("6g6SCRi3QCqKBoygYSBBKgTa-gzGzoHsz", "NisbShpRckxj9UIXxBbMJxwp");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 15262,
+    el: 'wpac-rating',
+    color: 'f79533'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>;
+  <script>
+ $("body").backstretch("https://user-images.githubusercontent.com/45387793/49206886-7249b800-f3ee-11e8-9eff-b6d9181a2c50.jpg");
+  </script>
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
