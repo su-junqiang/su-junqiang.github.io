@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#fff">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-flash.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon-16x16-next.png?v=5.1.4" color="#fff">
+
+
+
+
+
+  <meta name="keywords" content="IPXE,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="摘要在实际工作中，我们经常会遇到这样的情况：想要安装Linux但是计算机不带光驱或软驱，或者是笔记本配置的非标准的软驱和光驱，如USB接口，在Linux安装时所引导的Linux内核一般都不会带这些接口的驱动，所以也无法通过本地安装Linux，此外，在一些场合，如机房，IT实验室，工厂生产线，有大量的计算机需要同时安装Linux，如果通过光驱的方式一个个安装，不仅效率低，也不利于维护。这是时候你就需">
+<meta name="keywords" content="IPXE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IPXE、PXE  环境 ？？？">
+<meta property="og:url" content="https:su-junqiang.github.io/2020/08/15/PXE&IPXE环境配置/index.html">
+<meta property="og:site_name" content="-,-Reality-.">
+<meta property="og:description" content="摘要在实际工作中，我们经常会遇到这样的情况：想要安装Linux但是计算机不带光驱或软驱，或者是笔记本配置的非标准的软驱和光驱，如USB接口，在Linux安装时所引导的Linux内核一般都不会带这些接口的驱动，所以也无法通过本地安装Linux，此外，在一些场合，如机房，IT实验室，工厂生产线，有大量的计算机需要同时安装Linux，如果通过光驱的方式一个个安装，不仅效率低，也不利于维护。这是时候你就需">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/pxe%E4%BA%A4%E4%BA%92.png">
+<meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/0880c6b5041080c58d06.png">
+<meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/新建虚拟机.png">
+<meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/创建空白虚拟机.png">
+<meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/开机动态获取IP.png">
+<meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/进入ipxe安装菜单.png">
+<meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/正式安装centos.png">
+<meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/新建虚拟网卡.jpg">
+<meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/新建虚拟网卡并配置.jpg">
+<meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/TFTP连接超时.jpg">
+<meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/安装VirtualBox拓展包.jpg">
+<meta property="og:updated_time" content="2020-09-12T03:00:30.112Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IPXE、PXE  环境 ？？？">
+<meta name="twitter:description" content="摘要在实际工作中，我们经常会遇到这样的情况：想要安装Linux但是计算机不带光驱或软驱，或者是笔记本配置的非标准的软驱和光驱，如USB接口，在Linux安装时所引导的Linux内核一般都不会带这些接口的驱动，所以也无法通过本地安装Linux，此外，在一些场合，如机房，IT实验室，工厂生产线，有大量的计算机需要同时安装Linux，如果通过光驱的方式一个个安装，不仅效率低，也不利于维护。这是时候你就需">
+<meta name="twitter:image" content="https:su-junqiang.github.io/2020/08/15/img/pxe%E4%BA%A4%E4%BA%92.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"perspectiveLeftIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"perspectiveLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https:su-junqiang.github.io/2020/08/15/PXE&IPXE环境配置/">
+
+
+
+
+
+  <title>IPXE、PXE  环境 ？？？ | -,-Reality-.</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?118ee71272155728d31d50c2cbbf5bd4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+ <script>
+class Circle {
+    //创建对象
+    //以一个圆为对象
+    //设置随机的 x，y坐标，r半径，_mx，_my移动的距离
+    //this.r是创建圆的半径，参数越大半径越大
+    //this._mx,this._my是移动的距离，参数越大移动
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.r = Math.random() * 10 ;
+        this._mx = Math.random() ;
+        this._my = Math.random() ;
+
+    }
+
+    //canvas 画圆和画直线
+    //画圆就是正常的用canvas画一个圆
+    //画直线是两个圆连线，为了避免直线过多，给圆圈距离设置了一个值，距离很远的圆圈，就不做连线处理
+    drawCircle(ctx) {
+        ctx.beginPath();
+        //arc() 方法使用一个中心点和半径，为一个画布的当前子路径添加一条弧。
+        ctx.arc(this.x, this.y, this.r, 0, 360)
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(204, 204, 204, 0.3)';
+        ctx.fill();
+    }
+
+    drawLine(ctx, _circle) {
+        let dx = this.x - _circle.x;
+        let dy = this.y - _circle.y;
+        let d = Math.sqrt(dx * dx + dy * dy)
+        if (d < 150) {
+            ctx.beginPath();
+            //开始一条路径，移动到位置 this.x,this.y。创建到达位置 _circle.x,_circle.y 的一条线：
+            ctx.moveTo(this.x, this.y);   //起始点
+            ctx.lineTo(_circle.x, _circle.y);   //终点
+            ctx.closePath();
+            ctx.strokeStyle = 'rgba(204, 204, 204, 0.3)';
+            ctx.stroke();
+        }
+    }
+
+    // 圆圈移动
+    // 圆圈移动的距离必须在屏幕范围内
+    move(w, h) {
+        this._mx = (this.x < w && this.x > 0) ? this._mx : (-this._mx);
+        this._my = (this.y < h && this.y > 0) ? this._my : (-this._my);
+        this.x += this._mx / 2;
+        this.y += this._my / 2;
+    }
+}
+//鼠标点画圆闪烁变动
+class currentCirle extends Circle {
+    constructor(x, y) {
+        super(x, y)
+    }
+
+    drawCircle(ctx) {
+        ctx.beginPath();
+        //注释内容为鼠标焦点的地方圆圈半径变化
+        //this.r = (this.r < 14 && this.r > 1) ? this.r + (Math.random() * 2 - 1) : 2;
+        this.r = 8;
+        ctx.arc(this.x, this.y, this.r, 0, 360);
+        ctx.closePath();
+        //ctx.fillStyle = 'rgba(0,0,0,' + (parseInt(Math.random() * 100) / 100) + ')'
+        ctx.fillStyle = 'rgba(255, 77, 54, 0.3)'
+        ctx.fill();
+
+    }
+}
+//更新页面用requestAnimationFrame替代setTimeout
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
+let canvas = document.getElementById('canvas');
+let ctx = canvas.getContext('2d');
+let w = canvas.width = canvas.offsetWidth;
+let h = canvas.height = canvas.offsetHeight;
+let circles = [];
+let current_circle = new currentCirle(0, 0)
+
+let draw = function () {
+    ctx.clearRect(0, 0, w, h);
+    for (let i = 0; i < circles.length; i++) {
+        circles[i].move(w, h);
+        circles[i].drawCircle(ctx);
+        for (j = i + 1; j < circles.length; j++) {
+            circles[i].drawLine(ctx, circles[j])
+        }
+    }
+    if (current_circle.x) {
+        current_circle.drawCircle(ctx);
+        for (var k = 1; k < circles.length; k++) {
+            current_circle.drawLine(ctx, circles[k])
+        }
+    }
+    requestAnimationFrame(draw)
+}
+
+let init = function (num) {
+    for (var i = 0; i < num; i++) {
+        circles.push(new Circle(Math.random() * w, Math.random() * h));
+    }
+    draw();
+}
+window.addEventListener('load', init(60));
+window.onmousemove = function (e) {
+    e = e || window.event;
+    current_circle.x = e.clientX;
+    current_circle.y = e.clientY;
+}
+window.onmouseout = function () {
+    current_circle.x = null;
+    current_circle.y = null;
+
+};
+</script>
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  
+  
+  
+    
+  
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">-,-Reality-.</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">他妈了个巴子</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https:su-junqiang.github.io/2020/08/15/PXE&IPXE环境配置/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="苏俊强">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://user-images.githubusercontent.com/45387793/49084566-c89de600-f28a-11e8-84d5-d7bfcad467e8.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="-,-Reality-.">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">IPXE、PXE  环境 ？？？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-15T15:06:39+08:00">
+                2020-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/IPXE/" itemprop="url" rel="index">
+                    <span itemprop="name">IPXE</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/08/15/PXE&IPXE环境配置/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/08/15/PXE&IPXE环境配置/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+		
+             <span id="/2020/08/15/PXE&IPXE环境配置/" class="leancloud_visitors" data-flag-title="IPXE、PXE  环境 ？？？">
+			   <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count">
+				</span>
+				
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  6k
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>在实际工作中，我们经常会遇到这样的情况：想要安装Linux但是计算机不带光驱或软驱，或者是笔记本配置的非标准的软驱和光驱，如USB接口，在Linux安装时所引导的Linux内核一般都不会带这些接口的驱动，所以也无法通过本地安装Linux，此外，在一些场合，如机房，IT实验室，工厂生产线，有大量的计算机需要同时安装Linux，如果通过光驱的方式一个个安装，不仅效率低，也不利于维护。这是时候你就需要PXE的强大功能了，本文将会介绍PXE、IPXE、网络引导交互过程以及配置流程。</p>
+<h1 id="PXE"><a href="#PXE" class="headerlink" title="PXE"></a>PXE</h1><p>PXE是指在没有软驱、硬盘、CD-ROM的情况下引导计算机的一种方式，也就是BIOS将使用PXE协议从网络引导。</p>
+<ul>
+<li>DHCP服务器：用来动态分配IP地址（同时分配子网掩码、网关、TFTP服务器地址、启动文件名、DNS服务器、时间服务器等等）。</li>
+<li>TFTP服务器：用来提供启动文件的下载</li>
+</ul>
+<p>简单说来，PXE服务器就是DHCP服务器+TFTP服务器。工作于Client/Server的网络模式，支持<a href="https://baike.baidu.com/item/工作站" target="_blank" rel="noopener">工作站</a>通过网络从远端服务器下载映像，并由此支持通过网络启动操作系统，在启动过程中，终端要求DHCP服务器分配IP地址，再用<a href="https://baike.baidu.com/item/TFTP" target="_blank" rel="noopener">TFTP</a>（trivial file transfer protocol）或<a href="https://baike.baidu.com/item/MTFTP" target="_blank" rel="noopener">MTFTP</a>(multicast trivial file transfer protocol)协议下载一个启动软件包到本机内存中执行，由这个启动软件包完成终端（客户端）基本软件设置，从而引导预先安装在服务器中的终端操作系统。PXE可以引导多种操作系统，如：<a href="https://baike.baidu.com/item/Windows" target="_blank" rel="noopener">Windows</a>95/98/2000/windows2003/windows2008/winXP/win7/win8,<a href="https://baike.baidu.com/item/linux" target="_blank" rel="noopener">linux</a>系列系统等。</p>
+<h1 id="IPXE"><a href="#IPXE" class="headerlink" title="IPXE"></a>IPXE</h1><p>ipxe的前身为gpxe，由于gPXE存在商业收购风险。其开发者又启动了一个名为<strong>iPXE</strong>的开源项目。作为gPXE的一个分支。 官方地址：<a href="http://ipxe.org/" target="_blank" rel="noopener">http://ipxe.org/</a><br>从官网文档中可以看出，ipxe很强大，也确实强大。大致意思是pxe进化gpxe，gpxe进化ipxe（<a href="http://ipxe.org/faq）。支持更多的协议，兼容性更好，不挑网卡。不过也可以给网卡刷一下rom，让网卡更好的支持ipxe启动（http://ipxe.org/howto/romburning）。它提供了完整的PXE实施，并增强了其他功能，例如：" target="_blank" rel="noopener">http://ipxe.org/faq）。支持更多的协议，兼容性更好，不挑网卡。不过也可以给网卡刷一下rom，让网卡更好的支持ipxe启动（http://ipxe.org/howto/romburning）。它提供了完整的PXE实施，并增强了其他功能，例如：</a></p>
+<ul>
+<li>通过HTTP从Web服务器启动</li>
+<li>从iSCSI SAN引导</li>
+<li>通过FCoE从光纤通道SAN引导</li>
+<li>从AoE SAN引导</li>
+<li>从无线网络启动</li>
+<li>从广域网启动</li>
+<li>从Infiniband网络启动</li>
+<li>用<a href="https://ipxe.org/scripting" target="_blank" rel="noopener">脚本</a>控制引导过程</li>
+</ul>
+<h1 id="BIOS和UEFI"><a href="#BIOS和UEFI" class="headerlink" title="BIOS和UEFI"></a>BIOS和UEFI</h1><p><strong>BIOS：</strong></p>
+<p>（Basic Input/Output System的缩写、中文：基本输入输出系统），在IBM PC兼容机上，是一种业界标准的固件接口。BIOS这个字眼是在1975第一次由CP/M操作系统中出现。BIOS是个人电脑启动时加载的第一个软件。BIOS用于计算机开机时执行系统各部分的的自检，并启动引导程序或装载在内存的操作系统。此外，BIOS还向操作系统提供一些系统参数。系统硬件的变化是由BIOS隐藏，程序使用BIOS服务而不是直接访问硬件。现代操作系统会忽略BIOS提供的抽象层并直接访问硬件组件。 每一台普通的电脑都会有一个BIOS，用于加载电脑最基本的程式码，担负着初始化硬件，检测硬件功能以及引导操作系统的任务。 </p>
+<p><strong>UEFI：</strong></p>
+<p>全称“统一的可扩展固件接口”(Unified Extensible Firmware Interface)，是一种详细描述类型接口的标准。这种接口用于操作系统自动从预启动操作环境，加载到一种操作系统上。可扩展固件接口（Extensible Firmware Interface，EFI）是 Intel 为 PC 固件的体系结构、接口和服务提出的建议标准。其主要目的是为了提供一组在 OS 加载之前（启动前）在所有平台上一致的、正确指定的启动服务，被看作是有近20多年历史的 BIOS 的继任者。另外，由于UEFI不支持32位。</p>
+<p><strong>UEFI的特点</strong> 来自微软官网</p>
+<p>1、通过保护预启动或预引导进程，从而提高安全性。<br>2、缩短了启动时间和从休眠状态恢复的时间。<br>3、支持容量超过2.2 TB的驱动器。<br>4、支持64位的现代固件设备驱动程序，系统在启动过程中可以使用它们来对超过172亿GB的<a href="https://www.hack520.com/topic/ram/" target="_blank" rel="noopener">内存</a>进行寻址。<br>5、UEFI硬件可与BIOS结合使用。</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>IPXE 对运行环境没有什么需求，只需能提供 <code>tftp</code>, <code>dhcp</code>, <code>http</code> 等服务的系统即可。这里使用 Linux 环境来搭建IPXE服务；采用 <a href="http://www.thekelleys.org.uk/dnsmasq/doc.html" target="_blank" rel="noopener">dnsmasq</a> 这个小巧玲珑的软件提供 <code>tftp</code> 和 <code>dhcp</code> 服务；这里在虚拟机VMware® Workstation 15 Pro中预装了<a href="https://mirrors.oit.uci.edu/centos/7.5.1804/isos/x86_64/" target="_blank" rel="noopener">CentOS-7.5-x86_64-DVD-1804</a>,以及将该镜像放置在<code>/home/</code>目录下，为后续空白虚拟机进行网卡启动安装系统做好准备。</p>
+<ul>
+<li>DHCP服务:给客户端分配IP地址,定位引导程序 </li>
+<li>DNS服务:为客户端分配主机名(可选) </li>
+<li>TFTP服务:提供引导程序下载(因为网卡PXE只提供了TFTP客户端) </li>
+<li>FTP服务(或者HTTP/NFS):提供安装系统所需要的软件包(yum源)</li>
+</ul>
+<h1 id="LINUX下的内核文件（vmlinuz-initrd-img-System-map-）"><a href="#LINUX下的内核文件（vmlinuz-initrd-img-System-map-）" class="headerlink" title="LINUX下的内核文件（vmlinuz/initrd.img/ System.map ）"></a>LINUX下的内核文件（vmlinuz/initrd.img/ System.map ）</h1><h3 id="vmlinuz"><a href="#vmlinuz" class="headerlink" title="vmlinuz"></a><em>vmlinuz</em></h3><p><code>vmlinuz</code>是可引导的、压缩的内核。“<code>vm</code>”代表“<code>Virtual Memory</code>”。Linux 支持虚拟内存，不像老的操作系统比如DOS有640KB内存的限制。Linux能够使用硬盘空间作为虚拟内存，因此得名“<code>vm</code>”。<code>vmlinuz</code>是可执行的Linux内核，它位于<code>/boot/vmlinuz</code>，它一般是一个软链接。<code>vmlinux</code>是未压缩的内核，<code>vmlinuz</code>是<code>vmlinux</code>的压缩文件。</p>
+<p>作用：进程管理、内存管理、文件管理、驱动管理、网络管理。</p>
+<h3 id="initrd-img"><a href="#initrd-img" class="headerlink" title="initrd.img"></a><em>initrd.img</em></h3><p><code>initrd.img</code>是一个小<code>ramdisk(内存虚拟硬盘)</code>的映象， 放的是和启动相关的驱动模块，用一部分内存模拟成磁盘，让操作系统访问。通常的步骤是先启动内核，然后内核挂载<code>initrd.img</code>，并执行里面的脚本来进一步挂载各种各样的模块。其中最重要的就是根文件系统驱动模块，有了它才能挂载根文件系统，继而运行用户空间的第一个应用程序，完成系统后续的启动。</p>
+<h1 id="启动流程"><a href="#启动流程" class="headerlink" title="启动流程"></a>启动流程</h1><p>大体流程：客户机从DHCP(获取IP，寻找iPXE服务器)&gt;tftp获取开机启动文件&gt;HTTP/TFTP/FTP（加载安装文件）&gt;本地安装</p>
+<p><img src="../img/pxe%E4%BA%A4%E4%BA%92.png" alt="pxe客户端服务端交互"></p>
+<p><img src="../img/0880c6b5041080c58d06.png" alt="0880c6b5041080c58d06"></p>
+<h1 id="IPXE-CentOS7环境配置"><a href="#IPXE-CentOS7环境配置" class="headerlink" title="IPXE-CentOS7环境配置"></a>IPXE-CentOS7环境配置</h1><h3 id="1-配置dnsmasq服务和ipxe基本环境"><a href="#1-配置dnsmasq服务和ipxe基本环境" class="headerlink" title="1.配置dnsmasq服务和ipxe基本环境"></a>1.配置dnsmasq服务和ipxe基本环境</h3><p>本次预装CentOS的网络适配器选择的是VMnet8（NAT）模式，配置<code>dnsmasq</code>服务和<code>ipxe</code>基本环境安装需要的包：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y ipxe-bootimgs dnsmasq</span><br></pre></td></tr></table></figure>
+<p>等待安装完毕后，创建目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir /tftpboot</span><br><span class="line"><span class="meta">#</span><span class="bash"> 适用于 BIOS 硬件</span></span><br><span class="line">cp /usr/share/ipxe/undionly.kpxe /tftpboot/</span><br><span class="line"><span class="meta">#</span><span class="bash"> 适用于 EFI 硬件</span></span><br><span class="line">cp /usr/share/ipxe/ipxe.efi /tftpboot/</span><br></pre></td></tr></table></figure>
+<p>编写一个<code>boot.ipxe</code>文件，用来展示IPXE的引导界面</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir /tftpboot/menu</span><br><span class="line">vi /tftpboot/menu/boot.ipxe</span><br></pre></td></tr></table></figure>
+<p>编写如下内容：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!ipxe</span></span><br><span class="line">menu PXE Boot Options</span><br><span class="line">item shell iPXE shell</span><br><span class="line">item <span class="keyword">exit</span>  <span class="keyword">Exit</span> to BIOS</span><br><span class="line"><span class="comment"># 默认选择 exit， 等待时间10s</span></span><br><span class="line">choose --<span class="keyword">default</span> <span class="keyword">exit</span> --timeout <span class="number">10000</span> option &amp;&amp; <span class="keyword">goto</span> $&#123;option&#125;</span><br><span class="line"><span class="comment"># 可以切换到shell</span></span><br><span class="line">:shell</span><br><span class="line">shell</span><br><span class="line"><span class="comment"># 退出</span></span><br><span class="line">:<span class="keyword">exit</span></span><br><span class="line"><span class="keyword">exit</span></span><br></pre></td></tr></table></figure>
+<p>修改<code>/etc/dnsmasq.conf</code>配置文件，更具自己实际情况配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 禁用dns</span></span><br><span class="line">port=0</span><br><span class="line"><span class="meta">#</span><span class="bash"> 监听地址本机ip</span></span><br><span class="line">listen-address=192.168.249.131</span><br><span class="line"><span class="meta">#</span><span class="bash"> 接听网口</span></span><br><span class="line">interface=ens33</span><br><span class="line"> </span><br><span class="line"><span class="meta">#</span><span class="bash"> 启动tftp</span></span><br><span class="line">enable-tftp</span><br><span class="line"><span class="meta">#</span><span class="bash"> 配置tftp存储文件的目录</span></span><br><span class="line">tftp-root=/tftpboot</span><br><span class="line"> </span><br><span class="line"><span class="meta">#</span><span class="bash"> 随机分配地址</span></span><br><span class="line">dhcp-range=192.168.249.200,192.168.249.250,255.255.255.0</span><br><span class="line"><span class="meta">#</span><span class="bash"> 或者静态分配地址</span></span><br><span class="line"><span class="meta">#</span><span class="bash">dhcp-range=192.168.72.200,static,255.255.255.0</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#</span><span class="bash"> 配置引导文件</span></span><br><span class="line">dhcp-vendorclass=BIOS,PXEClient:Arch:00000</span><br><span class="line">dhcp-match=set:ipxe,175</span><br><span class="line">dhcp-boot=tag:!ipxe,tag:BIOS,undionly.kpxe</span><br><span class="line">dhcp-boot=tag:!ipxe,tag:!BIOS,ipxe.efi</span><br><span class="line">dhcp-boot=tag:ipxe,menu/boot.ipxe</span><br></pre></td></tr></table></figure>
+<p>启动服务关闭<code>Firewalls &amp; SELinux</code>并重启</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 开机不自动启动防火墙</span></span><br><span class="line">systemctl disable firewalld</span><br><span class="line"><span class="meta">#</span><span class="bash"> 开机自动启动dnsmasq</span></span><br><span class="line">systemctl enable dnsmasq</span><br><span class="line"><span class="meta">#</span><span class="bash"> 通过修改SELINUX的配置文件达到关闭SELINUX服务(SELinux 主要作用就是最大限度地减小系统中服务进程可访问的资  <span class="comment"># 源（最小权限原则）。)</span></span></span><br><span class="line">sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config</span><br><span class="line"><span class="meta">#</span><span class="bash"> 重新启动</span></span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+<h3 id="2-设置CentOS7网络安装"><a href="#2-设置CentOS7网络安装" class="headerlink" title="2.设置CentOS7网络安装"></a>2.设置CentOS7网络安装</h3><p>安装<code>http</code>服务并设置开机启动</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum -y install httpd</span><br><span class="line"><span class="meta">#</span><span class="bash"> 开启httpd服务</span></span><br><span class="line">systemctl start httpd</span><br><span class="line"><span class="meta">#</span><span class="bash"> 设置为开机自启动</span></span><br><span class="line">systemctl enable httpd</span><br></pre></td></tr></table></figure>
+<p>挂载<code>iso</code>到<code>http</code>服务上</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建一个目录用来挂载镜像</span></span><br><span class="line">mkdir /var/www/html/media/</span><br><span class="line">cd  /var/www/html/media/</span><br><span class="line">mkdir centos7-ipxe</span><br><span class="line"><span class="meta">#</span><span class="bash"> 挂在镜像到ipxe-iso目录下</span></span><br><span class="line">mount -t iso9660 -o,loop /home/CentOS-7.5.iso /var/www/html/media/centos7-ipxe/</span><br></pre></td></tr></table></figure>
+<p>修改<code>/tftpboot/menu/boot.ipxe</code>如下</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!ipxe</span></span><br><span class="line">:start</span><br><span class="line">menu PXE Boot Options</span><br><span class="line">item shell iPXE shell</span><br><span class="line"><span class="comment"># 创建CentOS 7 installation选项</span></span><br><span class="line">item centos7-net CentOS <span class="number">7</span> installation</span><br><span class="line">item <span class="keyword">exit</span>  <span class="keyword">Exit</span> to BIOS</span><br><span class="line">choose --<span class="keyword">default</span> centos7-net --timeout <span class="number">10000</span> option &amp;&amp; <span class="keyword">goto</span> $&#123;option&#125;</span><br><span class="line">:shell</span><br><span class="line">shell</span><br><span class="line">:centos7-net</span><br><span class="line">set server_root http:<span class="comment">//192.168.249.131/media/centos7-ipxe</span></span><br><span class="line">initrd $&#123;server_root&#125;/images/pxeboot/initrd.img</span><br><span class="line"><span class="comment"># 这里没有使用ks文件,如果使用ks自动安装的情况</span></span><br><span class="line"><span class="comment"># kernel $&#123;server_root&#125;/images/pxeboot/vmlinuz inst.ks=$&#123;server_root&#125;/centos7.ks ip=dhcp ipv6.disable initrd=initrd.img</span></span><br><span class="line">kernel $&#123;server_root&#125;/images/pxeboot/vmlinuz inst.repo=$&#123;server_root&#125;/ ip=dhcp ipv6.disable initrd=initrd.img inst.geoloc=<span class="number">0</span> devfs=nomount</span><br><span class="line">boot</span><br><span class="line">:<span class="keyword">exit</span></span><br><span class="line"><span class="keyword">exit</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-网络安装CentOS"><a href="#3-网络安装CentOS" class="headerlink" title="3.网络安装CentOS"></a>3.网络安装CentOS</h3><p>新建虚拟机设置为稍后安装操作系统。<strong><em>注意：指定分配给虚拟机的内存需至少为2G以免安装错误</em></strong></p>
+<p><img src="../img/新建虚拟机.png" alt="创建空白"></p>
+<p><img src="../img/创建空白虚拟机.png" alt="创建空白"></p>
+<p>之后按照正常创建虚拟机的方式进行创建空白虚拟机，创建好后打开该虚拟机，看到如下画面说明你已成功一半了：</p>
+<p><img src="../img/开机动态获取IP.png" alt="开机动态获取IP"></p>
+<p>接下来等待数秒会进入如PXE的菜单选项选择 CenOS 7 installation进行安装</p>
+<p><img src="../img/进入ipxe安装菜单.png" alt="进入安装菜单"></p>
+<p>回车后等待进入安装画面</p>
+<p><img src="../img/正式安装centos.png" alt="正式安装centos"></p>
+<p>接下来按照提示正确安装即可</p>
+<h3 id="4-使用ks自动安装"><a href="#4-使用ks自动安装" class="headerlink" title="4.使用ks自动安装"></a>4.使用ks自动安装</h3><p>上述安装为手动选择并配置安装，下面讲述的是通过linux的自动安装脚本<code>kickstart</code>完成系统全自动安装。这里t通过<code>kickstart</code>配置工具<code>system-config-kickstart</code>生成脚本,创建文件 <code>centos7.ks</code>并键入一下内容：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#version=DEVEL</span></span><br><span class="line"><span class="comment"># Install OS instead of upgrade</span></span><br><span class="line">install</span><br><span class="line"><span class="comment"># Keyboard layouts</span></span><br><span class="line">keyboard <span class="string">'us'</span></span><br><span class="line"><span class="comment"># Root password=123456</span></span><br><span class="line">rootpw --iscrypted $<span class="number">1</span>$jTvf.BHT$<span class="number">2</span>x/yp/PYMZcRmD6/kCrGi1</span><br><span class="line"><span class="comment"># Use network installation</span></span><br><span class="line">url --url=<span class="string">"http://192.168.249.131/media/centos7-ipxe"</span></span><br><span class="line"><span class="comment"># System language</span></span><br><span class="line">lang zh_CN</span><br><span class="line"><span class="comment"># System authorization information</span></span><br><span class="line">auth  --useshadow  --passalgo=sha512</span><br><span class="line"><span class="comment"># 命令行 Use text mode install</span></span><br><span class="line"><span class="comment"># text</span></span><br><span class="line"><span class="comment"># 图形化 Use graphical install</span></span><br><span class="line">graphical</span><br><span class="line">firstboot --disable</span><br><span class="line"><span class="comment"># SELinux configuration</span></span><br><span class="line">selinux --disabled</span><br><span class="line"></span><br><span class="line"><span class="comment"># Firewall configuration</span></span><br><span class="line">firewall --disabled</span><br><span class="line"><span class="comment"># Network information</span></span><br><span class="line">network  --bootproto=dhcp --device=ens33</span><br><span class="line"><span class="comment"># Reboot after installation</span></span><br><span class="line">reboot</span><br><span class="line"><span class="comment"># System timezone</span></span><br><span class="line">timezone Asia/Shanghai</span><br><span class="line"><span class="comment"># username=admin password=123456   </span></span><br><span class="line">user --name=admin --password=$<span class="number">6</span>$piKcV2Fc3Qn6nHdr$a7jafMHWefFMfiNGGb4USIuEXSTlJur5D.DXwFOLHaita35p6DgJwXtBgqjXK/<span class="number">5</span>/<span class="number">5</span>RAghsmNADw1v07bj8jAx1 --iscrypted --gecos=<span class="string">"admin"</span></span><br><span class="line"><span class="comment"># System bootloader configuration</span></span><br><span class="line">bootloader --location=mbr</span><br><span class="line"><span class="comment"># Clear the Master Boot Record</span></span><br><span class="line">zerombr</span><br><span class="line"><span class="comment"># Partition clearing information</span></span><br><span class="line">clearpart --all --initlabel</span><br><span class="line"><span class="comment"># Disk partitioning information</span></span><br><span class="line">part /boot --fstype=<span class="string">"xfs"</span> --size=<span class="number">500</span></span><br><span class="line">part /home --fstype=<span class="string">"xfs"</span> --size=<span class="number">4096</span></span><br><span class="line">part swap --fstype=<span class="string">"swap"</span> --size=<span class="number">4096</span></span><br><span class="line">part / --fstype=<span class="string">"xfs"</span> --grow --size=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">%packages</span><br><span class="line">@base</span><br><span class="line">@core</span><br><span class="line">@desktop-debugging</span><br><span class="line">@dial-up</span><br><span class="line">@directory-client</span><br><span class="line">@fonts</span><br><span class="line">@gnome-desktop</span><br><span class="line">@guest-desktop-agents</span><br><span class="line">@input-methods</span><br><span class="line">@internet-browser</span><br><span class="line">@java-platform</span><br><span class="line">@multimedia</span><br><span class="line">@network-file-system-client</span><br><span class="line">@<span class="keyword">print</span>-client</span><br><span class="line">@x11</span><br><span class="line">binutils</span><br><span class="line">chrony</span><br><span class="line">ftp</span><br><span class="line">gcc</span><br><span class="line">kernel-devel</span><br><span class="line">kexec-tools</span><br><span class="line">make</span><br><span class="line">open-vm-tools</span><br><span class="line">patch</span><br><span class="line">python</span><br><span class="line"></span><br><span class="line">%end</span><br><span class="line"></span><br><span class="line">%addon com_redhat_kdump --enable --reserve-mb=<span class="string">'auto'</span></span><br><span class="line"></span><br><span class="line">%end</span><br></pre></td></tr></table></figure>
+<p>将该文件移动至<code>/var/www/html/media</code>下，由于<code>/var/www/html/media/centos7-ipxe/</code>下已挂在CentOS的镜像，不允许被写入，所以我们修改<code>/tftpboot/menu/boot.ipxe</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!ipxe</span></span><br><span class="line">:start</span><br><span class="line">menu PXE Boot Options</span><br><span class="line">item shell iPXE shell</span><br><span class="line">item centos7-net CentOS <span class="number">7</span> installation</span><br><span class="line">item <span class="keyword">exit</span>  <span class="keyword">Exit</span> to BIOS</span><br><span class="line">choose --<span class="keyword">default</span> centos7-net --timeout <span class="number">10000</span> option &amp;&amp; <span class="keyword">goto</span> $&#123;option&#125;</span><br><span class="line">:shell</span><br><span class="line">shell</span><br><span class="line">:centos7-net</span><br><span class="line">set server_root http:<span class="comment">//192.168.249.131/media/centos7-ipxe</span></span><br><span class="line">initrd $&#123;server_root&#125;/images/pxeboot/initrd.img</span><br><span class="line"><span class="comment"># 这里使用ks自动安装</span></span><br><span class="line">kernel $&#123;server_root&#125;/images/pxeboot/vmlinuz inst.ks=http:<span class="comment">//192.168.249.131/media/centos7.ks ip=dhcp ipv6.disable initrd=initrd.img</span></span><br><span class="line"><span class="comment">#kernel $&#123;server_root&#125;/images/pxeboot/vmlinuz inst.repo=$&#123;server_root&#125;/ ip=dhcp ipv6.disable initrd=initrd.img inst.geoloc=0 devfs=nomount</span></span><br><span class="line">boot</span><br><span class="line">:<span class="keyword">exit</span></span><br><span class="line"><span class="keyword">exit</span></span><br></pre></td></tr></table></figure>
+<p>这样我们新建一台空白虚拟机启动虚拟机，在同一网段下就可以实现无人值守全自动安装CentOS7。</p>
+<h3 id="5-补充"><a href="#5-补充" class="headerlink" title="5.补充"></a>5.补充</h3><p>还有一些命令需要了解一下，就是网卡启动的时候Ctrl-B出来的界面。</p>
+<p>1.查看网卡设备：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">iPXE</span>&gt; <span class="selector-tag">ifstat</span></span><br><span class="line"><span class="selector-tag">net0</span>: 52<span class="selector-pseudo">:54</span><span class="selector-pseudo">:00</span><span class="selector-pseudo">:12</span><span class="selector-pseudo">:34</span><span class="selector-pseudo">:56</span> <span class="selector-tag">using</span> <span class="selector-tag">rtl8139</span> <span class="selector-tag">on</span> <span class="selector-tag">PCI00</span><span class="selector-pseudo">:03.0</span> (<span class="selector-tag">closed</span>)</span><br><span class="line">  <span class="selector-attr">[Link:up, TX:0 TXE:0 RX:0 RXE:0]</span></span><br></pre></td></tr></table></figure>
+<p>2.dhcp获取ip：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">iPXE</span>&gt; <span class="selector-tag">dhcp</span></span><br><span class="line"><span class="selector-tag">DHCP</span> (<span class="selector-tag">net0</span> 52<span class="selector-pseudo">:54</span><span class="selector-pseudo">:00</span><span class="selector-pseudo">:12</span><span class="selector-pseudo">:34</span><span class="selector-pseudo">:56)....</span> <span class="selector-tag">ok</span></span><br></pre></td></tr></table></figure>
+<p>3.查看目前获取到的IP和DNS：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iPXE&gt; route</span><br><span class="line">net0: <span class="number">10.0</span><span class="number">.0</span><span class="number">.155</span>/<span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span> gw <span class="number">10.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">iPXE&gt; show dns</span><br><span class="line">net0.dhcp/dns:ipv4 = <span class="number">10.0</span><span class="number">.0</span><span class="number">.6</span></span><br></pre></td></tr></table></figure>
+<p>4.直接链到“default”文件：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iPXE&gt; chain http:<span class="comment">//boot.ipxe.org/demo/boot.php</span></span><br></pre></td></tr></table></figure>
+<h1 id="PXE-CentOS7环境配置"><a href="#PXE-CentOS7环境配置" class="headerlink" title="PXE-CentOS7环境配置"></a>PXE-CentOS7环境配置</h1><p>pxe环境配置同样需要有一个DHCP服务器，需要有tftp服务器和一个文件服务器，其中文件服务器可以是ftp，http，nfs等文件服务器，这里我们以tftp、dhcp、ftp(vsftpd)服务进行搭建</p>
+<h3 id="1-安装tftp服务"><a href="#1-安装tftp服务" class="headerlink" title="1.安装tftp服务"></a>1.安装tftp服务</h3><p>tftp的服务器需要安装tftp-server包，在CentOS7需要启动tftpd.socket ，其中tftp默认的文件路径为<code>/var/lib/tftpboot</code>，接下来进行tftp-server安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install tftp-server tftp</span><br></pre></td></tr></table></figure>
+<p>启动tftp服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start tftp.socket</span><br></pre></td></tr></table></figure>
+<p>修改默认根文件路径</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]#vim /etc/xinetd.d/tftp</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">###########################配置详情#########################</span></span></span><br><span class="line">service tftp</span><br><span class="line">&#123;</span><br><span class="line">        socket_type             = dgram</span><br><span class="line">        protocol                = udp</span><br><span class="line">        wait                    = yes</span><br><span class="line">        user                    = root</span><br><span class="line">        server                  = /usr/sbin/in.tftpd</span><br><span class="line">        #修改文件目录为根文件</span><br><span class="line">        server_args             = -s /var/lib/tftpboot -c  </span><br><span class="line">        disable                 = yes</span><br><span class="line">        per_source              = 11</span><br><span class="line">        cps                     = 100 2</span><br><span class="line">        flags                   = IPv4</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>tftp客户端测试</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]#yum -y install tftp</span><br><span class="line">[root@centos7 ~]#cd /var/lib/tftpboot</span><br><span class="line">[root@centos7 tftpboot]#touch tftp.test</span><br><span class="line">[root@centos7 tftpboot]#cd</span><br><span class="line">[root@centos7 ~]#tftp 192.168.249.131</span><br><span class="line"><span class="meta">tftp&gt;</span><span class="bash"> get tftp.test</span></span><br><span class="line"><span class="meta">tftp&gt;</span><span class="bash"> quit</span></span><br><span class="line">[root@centos7 ~]# ls</span><br><span class="line">tftp.test</span><br></pre></td></tr></table></figure>
+<h3 id="2-安装DHCP服务"><a href="#2-安装DHCP服务" class="headerlink" title="2.安装DHCP服务"></a>2.安装DHCP服务</h3><p>安装dhcp服务器包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]# yum -y install dhcp</span><br></pre></td></tr></table></figure>
+<p>复制样例配置文件并覆盖原来文件，因为原配置文件为空。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 dhcp]<span class="comment"># cp /usr/share/doc/dhcp-4.2.5/dhcpd.conf.example ./dhcpd.conf</span></span><br></pre></td></tr></table></figure>
+<p>编辑配置文件，可根据实际情况来配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]#vim dhcpd.conf</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">###############################配置详情###########################</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 缺省租约时间</span></span><br><span class="line">default-lease-time 28800;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 最大租约时间</span></span><br><span class="line">max-lease-time 43200;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 允许BOOTP启动</span></span><br><span class="line">allow bootp;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 以上都是全局参数</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 子网声明和掩码</span></span><br><span class="line">subnet 192.168.249.0 netmask 255.255.255.0 &#123;</span><br><span class="line">        # 设置地址范围</span><br><span class="line">        range 192.168.249.3 192.168.249.100;</span><br><span class="line">        # 设置网关</span><br><span class="line">        option routers 192.168.249.2;</span><br><span class="line">        # 设置PXE指明引导文件名称</span><br><span class="line">        filename "pxelinux.0";</span><br><span class="line">        # 设置PXE引导文件的服务器地址</span><br><span class="line">        next-server  192.168.249.136;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>启用服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start dhcpd</span><br></pre></td></tr></table></figure>
+<h3 id="3-安装ftp服务"><a href="#3-安装ftp服务" class="headerlink" title="3.安装ftp服务"></a>3.安装ftp服务</h3><p>ftp的默认文件共享路径为：<code>/var/ftp/pub/</code>如需要共享文件，只需放在该目录即可，安装系统可以直接将光盘挂载至该共享文件的一个子目录即可。</p>
+<p>安装软件包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install vsftpd</span><br></pre></td></tr></table></figure>
+<p>创建挂载目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir  /var/ftp/pub/centos7/</span><br></pre></td></tr></table></figure>
+<p>挂载光盘软件安装源至文件目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -o loop CentOS-7.5.iso /var/ftp/pub/centos7/</span><br></pre></td></tr></table></figure>
+<p>启用服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start vsftpd</span><br></pre></td></tr></table></figure>
+<h3 id="4-编写启动菜单及复制其他文件"><a href="#4-编写启动菜单及复制其他文件" class="headerlink" title="4.编写启动菜单及复制其他文件"></a>4.编写启动菜单及复制其他文件</h3><p>复制相关内核及其他文件到tftp服务的文件根目录下，其中启动菜单引导文件由syslinux包提供，所以安装此包即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install syslinux</span><br></pre></td></tr></table></figure>
+<p>复制<code>vmlinuz</code>、<code>initrd.img</code>、<code>pxelinux.0</code>、<code>chain.c32</code>、<code>memdisk</code>、<code>menu.c32</code>、<code>mboot.c32</code>到<code>/var/lib/tftpboot</code>目录下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment"># cd /var/ftp/pub/centos7/images/pxeboot/</span></span><br><span class="line">[root@centos7 pxeboot]<span class="comment"># ls</span></span><br><span class="line">initrd.img  TRANS.TBL  vmlinuz</span><br><span class="line">[root@centos7 pxeboot]<span class="comment"># cp vmlinuz initrd.img /var/lib/tftpboot/</span></span><br><span class="line">[root@centos7 pxeboot]<span class="comment"># cp /usr/share/syslinux/pxelinux.0 /var/lib/tftpboot</span></span><br><span class="line">[root@centos7 pxeboot]<span class="comment"># cp /usr/share/syslinux/&#123;chain.c32,memdisk,menu.c32,mboot.c32&#125; /var/lib/tftpboot</span></span><br></pre></td></tr></table></figure>
+<p>编写启动菜单<code>default</code>文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 pxeboot]# cd /var/lib/tftpboot</span><br><span class="line">[root@centos7 tftpboot]# mkdir pxelinux.cfg</span><br><span class="line">[root@centos7 tftpboot]# cd pxelinux.cfg/</span><br><span class="line">[root@centos7 pxelinux.cfg]# vim default</span><br><span class="line">default menu.c32</span><br><span class="line">     prompt 5</span><br><span class="line">     timeout 30</span><br><span class="line">     MENU TITLE Centos7 PXE</span><br><span class="line"> </span><br><span class="line">     LABEL linux_auto</span><br><span class="line">     MENU LABEL Install Centos7 x86_64 AUTO install</span><br><span class="line">    KERNEL vmlinuz</span><br><span class="line">    APPEND initrd=initrd.img ks=ftp://192.168.20.77/pub/ks.cfg</span><br><span class="line"> </span><br><span class="line">    LABEL linux</span><br><span class="line">  MENU LABEL Install Centos7 x86_6</span><br><span class="line">  KERNEL vmlinuz</span><br><span class="line">  APPEND initrd=initrd.img inst.repo=ftp://192.168.20.77/pub/centos7</span><br><span class="line">[root@centos7 ~]# cd</span><br></pre></td></tr></table></figure>
+<h3 id="5-注释"><a href="#5-注释" class="headerlink" title="5.注释"></a>5.注释</h3><ul>
+<li><p>initrd.img该文件可以在内存当中模拟文件系统</p>
+</li>
+<li><p>vmlinuz则是一个缩减版的内核文件拥有一些基本的网络功能，可以控制客户端进行下一步的从文件共享系统中下载真正的内核文件和驱动文件，最后真正的内核文件解压进行接管上一个内核，开始进行软件包的真正安装等任务。</p>
+</li>
+<li>Pxelinux.0文件它可以解释default文件中的每个配置项，并根据配置项做出不同的反应。如等待的时间、启动器背景、启动菜单、内核引导等等。</li>
+<li>Vesamenu.c32和menu.c32是syslinux所拥有众多模块中的两个，它们的功能是制定启动器使用什么模式的背景。Vesamenu.c32图形模式，menu.c32文本模式。使用时可以选择一个，这里我选择的是文本模式。</li>
+<li>pxelinux.cfg目录，pxelinux被执行后，它会扫描该目录下是否存在指定的配置文件，如果存在，则引用被制定的配置文件。 </li>
+<li>Default文件存放于pxelinux.cfg目录中，pxelinux程序最后扫描的配置文件名就是default，所以，我们经常把启动器配置项都写入该文件中，default文件中第一行指定使用哪种形式的图形化，menu.c32为字符图形化，也可以使用图形化的菜单vesamenu.c32。prompt和timeout指定超时时间，可以有多段，使用MENU TITLE 指定主标题，不同的安装方式可以有不同LABEL，我这里有两种，手动和自动，第一种为使用ks.cfg文件自动安装，第二种使用手动方式安装。</li>
+</ul>
+<h3 id="6-安装"><a href="#6-安装" class="headerlink" title="6.安装"></a>6.安装</h3><p>这里同上面的IPXE一样需要创建空白虚拟机，如果需要ks无人值守全自动安装同样可以使用</p>
+<p><code>kickstart</code>配置工具<code>system-config-kickstart</code>生成脚本,创建文件 <code>centos7.ks</code>，根据自己实际情况键入内容在，同一网段下就可以实现安装CentOS7。</p>
+<h1 id="问题合集"><a href="#问题合集" class="headerlink" title="问题合集"></a>问题合集</h1><h3 id="1-vsftpd问题合集"><a href="#1-vsftpd问题合集" class="headerlink" title="1.vsftpd问题合集"></a>1.vsftpd问题合集</h3><ul>
+<li><p>为vsftpd添加用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加新用户 Reality -d是用户的访问目录</span></span><br><span class="line">useradd -d /var/ftp/pub  Reality</span><br><span class="line"><span class="comment"># 为用户设置密码</span></span><br><span class="line">passwd Reality</span><br></pre></td></tr></table></figure>
+<p>配置vsftpd.conf`</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#修改ftp的根目录</span></span><br><span class="line">vim /etc/vsftpd/vsftpd.conf</span><br><span class="line"><span class="comment">############################配置详情#############################</span></span><br><span class="line"><span class="comment">#local_root 针对系统用户；anon_root 针对匿名用户。</span></span><br><span class="line">+++++++ local_root=/var/www/html</span><br><span class="line">+++++++ chroot_local_user=YES</span><br><span class="line">+++++++ anon_root=/var/ftp/pub</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>vsftpd配置完成并正常启动但是无法通过ftp协议访问</p>
+<p>首先排查本地受否可以访问，查看vsftpd是否在运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status vsftpd</span><br></pre></td></tr></table></figure>
+<p>安装<code>ftp</code>命令查看是否可以ftp连接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost 2020-08-18]<span class="comment"># yum -y install ftp</span></span><br><span class="line">[root@localhost 2020-08-18]<span class="comment"># ftp 192.168.211.132</span></span><br><span class="line">Connected to 192.168.211.132 (192.168.211.132).</span><br><span class="line">220 (vsFTPd 3.0.2)</span><br><span class="line">Name (192.168.211.132:root): Reality</span><br><span class="line">331 Please specify the password.</span><br><span class="line">Password:</span><br><span class="line">230 Login successful.</span><br><span class="line">Remote system <span class="built_in">type</span> is UNIX.</span><br><span class="line">Using binary mode to transfer files.</span><br><span class="line">ftp&gt; ls</span><br><span class="line">227 Entering Passive Mode (192,168,211,132,207,118).</span><br><span class="line">150 Here comes the directory listing.</span><br><span class="line">drwxr-xr-x    2 0        0              22 Aug 20 03:33 pxe-smac</span><br><span class="line">226 Directory send OK.</span><br><span class="line">ftp&gt; <span class="built_in">exit</span></span><br><span class="line">221 Goodbye.</span><br></pre></td></tr></table></figure>
+<p>如可以本地正常访问则查看防火墙是否关闭或者是否允许vsftpd端口放行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">############################第一种####################################</span></span><br><span class="line"><span class="comment">#查看vsftpd端口</span></span><br><span class="line">netstat -ntpl | grep vsftpd</span><br><span class="line"><span class="comment">#安装firewalld</span></span><br><span class="line">yum install firewalld firewall-config</span><br><span class="line"><span class="comment"># 查看所有打开的端口：</span></span><br><span class="line">firewall-cmd --zone=dmz --list-ports</span><br><span class="line"><span class="comment">#放行vsftpd端口</span></span><br><span class="line">firewall-cmd --zone=public --add-port=21/tcp --permanent </span><br><span class="line"><span class="comment">#重新加载</span></span><br><span class="line">firewall-cmd --reload</span><br><span class="line"><span class="comment">############################第二种####################################</span></span><br><span class="line"><span class="comment"># 关闭防火墙</span></span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="2-VirtualBox搭建环境指南"><a href="#2-VirtualBox搭建环境指南" class="headerlink" title="2.VirtualBox搭建环境指南"></a>2.VirtualBox搭建环境指南</h3><p>在VirtualBox上搭建PXE或者IPXE环境时首先要了解VirtualBox中的虚拟网络</p>
+<table>
+<thead>
+<tr>
+<th>网络模式</th>
+<th style="text-align:left">详情</th>
+<th style="text-align:center">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NAT〈网络地址转换模式〉</td>
+<td style="text-align:left">VirtualBox 中虚拟的主机（以下简称：虚拟主机）并不真实存在于网络中，宿主机和宿主机网络中的任何主机都不能直接访问虚拟主机，各虚拟主机也互不相通。虚拟主机能访 问宿主机，以及宿主机能访问的任何主机。虚拟主机访问网络是先通过 VirtualBox 转换后再发送出去的，数据接收也是先由 VirtualBox 接收后再转换转发到虚拟主机。</td>
+<td style="text-align:center">宿主机和宿主机网络中的任何主机都不能直接访问虚拟主机，但是VirtualBox 提供了端口转发，使得我们可以设置特定的端口供实体网络访问。</td>
+</tr>
+<tr>
+<td>Bridged Adapter〈桥接模式〉</td>
+<td style="text-align:left">虚拟主机通过 VirtualBox 桥接到宿主机的一个网卡中，就像真实存在于宿主机网络中的一台主机一样。虚拟主机能与宿主机和宿主机网络中的主机完美互通。被桥接的网卡会开启混杂模式。虚拟主机网络参数 ： 手动配置成桥接的宿主机网卡的同一网段，或通过宿主机网络中的 DHCP Ser 获取。</td>
+<td style="text-align:center">如果宿主机在一个受限制的网络虚拟主机是不能访问互联网的，如：宿主机使用ADSL、使用使用代理或VPN、宿主机网关做了MAC地址限制……</td>
+</tr>
+<tr>
+<td>Internal〈内部模式〉</td>
+<td style="text-align:left">虚拟机与外界完全分开，虚拟机与宿主机网络不能互通，只有 <em>同一名称（如：intnet）的内部网络模式的虚拟机之间才能互相访问</em> ，还有一个条件是在同一网段。虚拟主机网络参数 ： 默认不分配IP，需要自已手动设置。</td>
+<td style="text-align:center">/</td>
+</tr>
+<tr>
+<td>Host-only Adapter〈宿主机模式〉</td>
+<td style="text-align:left">VirtualBox 在宿主机中虚拟一个 host-only 网卡，然后把虚拟主机桥接到 host-only 网卡上，我们可以通过设置 host-only 网卡（共享、桥接）来实现网络连接</td>
+<td style="text-align:center">/</td>
+</tr>
+</tbody>
+</table>
+<p>VirtualBox中默认的Host-only Adapter是DHCP自动分配地址的，即使关闭DHCP任然会自动配置网卡。综上所述我所采取的是俩张网卡来作为配置环境：NAT、新建的Host-only Adapter。其中NAT网卡用于连接外网，新建的Host-only Adapter用于Xshell连接与DHCP地址分配，实现对需要网络安装的客户机直接通信。</p>
+<ul>
+<li><p>配置Host-only Adapter网卡,新建虚拟网卡：管理-&gt;主机网络管理器-&gt;新建-&gt;选中手动配置网卡-&gt;取消DHCP服务-&gt;应用<img src="../img/新建虚拟网卡.jpg" alt="新建虚拟网卡"></p>
+<p>​    <img src="../img/新建虚拟网卡并配置.jpg" alt="新建虚拟网卡并配置"></p>
+</li>
+<li><p>在新建好的虚拟机设置中选择网络，选择网卡1-&gt;点击启用网络连接-&gt;连接方式选择网络地址转换（NAT）；选择网卡2-&gt;点击启用网络连接-&gt;连接方式选择仅主机网络-&gt;界面名称选择刚创建的虚拟网络。</p>
+</li>
+<li><p>这时候有俩张网卡enp0s3(NAT)、enp0s8(Host-only)，但是后面的网卡ip是没有的需要我们自己配置，复制enp0s3的网卡配置到enp0s8</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/sysconfig/network-scripts/</span><br><span class="line">cp ifcfg-enp0s3 ifcfg-enp0s8</span><br></pre></td></tr></table></figure>
+<p>查看enp0s8网卡的mac地址、uuid并记录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ifconfig -a</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">nmcli con show</span><br></pre></td></tr></table></figure>
+<p>编辑<code>ifcfg-enp0s8</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">vi ifcfg-enp0s8</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">########################################################配置详情######################################################</span></span></span><br><span class="line">TYPE=Ethernet</span><br><span class="line">PROXY_METHOD=none</span><br><span class="line">BROWSER_ONLY=no</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">DEFROUTE=yes</span><br><span class="line">IPV4_FAILURE_FATAL=no</span><br><span class="line">IPV6INIT=yes</span><br><span class="line">IPV6_AUTOCONF=yes</span><br><span class="line">IPV6_DEFROUTE=yes</span><br><span class="line">IPV6_FAILURE_FATAL=no</span><br><span class="line">IPV6_ADDR_GEN_MODE=stable-privacy</span><br><span class="line">NAME=enp0s8</span><br><span class="line">HWADDR=08:00:27:73:09:e3</span><br><span class="line">UUID=a1a8cdad-3a45-32cc-a3a8-18acb8af644b</span><br><span class="line">DEVICE=enp0s8</span><br><span class="line">IPADDR=192.168.16.5</span><br><span class="line">GATEWAY=192.168.16.24</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">ONBOOT=yes</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>需要网络安装系统的客户机在VirtualBox上需要设置网卡与环境机的Host-only网卡一致才能实现DHCP动态分配地址以及俩个虚拟机之间的互相访问。</p>
+</li>
+</ul>
+<h3 id="3-VirtualBox中使用BIOS启动TFTP连接超时"><a href="#3-VirtualBox中使用BIOS启动TFTP连接超时" class="headerlink" title="3.VirtualBox中使用BIOS启动TFTP连接超时"></a>3.VirtualBox中使用BIOS启动TFTP连接超时</h3><p><img src="../img/TFTP连接超时.jpg" alt="TFTP连接超时"></p>
+<p>出现这个问题是因为在ipxe环境中<code>dhcpd.conf</code>配置的ip以及网关都是网络地址转换（NAT）,而实际中NAT模式中俩个虚拟机在VirtualBox是无法直接通信的，所以分配到的ip为NAT网卡的IP，通过TFTP去访问Host-only中的地址与NAT中的ipxe环境地址是无法访问到的，所以需要重新配置ipxe环境中的<code>dhcp.conf</code>将动态IP配置到与Host-only网卡一直的同一网段中，这样客户机设置的网卡为Host-only时就可以正常通过网络引导启动。具体VirtualBox网络模式可参考VirtualBox搭建环境指南。</p>
+<h3 id="4-VirtualBox中BIOS安装失败：“FATAL-No-bootable-medium-found-System-halted-”"><a href="#4-VirtualBox中BIOS安装失败：“FATAL-No-bootable-medium-found-System-halted-”" class="headerlink" title="4.VirtualBox中BIOS安装失败：“FATAL:No bootable medium found!System halted.”"></a>4.VirtualBox中BIOS安装失败：“FATAL:No bootable medium found!System halted.”</h3><p>经过确认默认情况下VirtualBox下载安装后是不支持PXE启动的，启动的时候是会报上面的错误，这是因为缺少pxe扩展包所导致，通过下面这个地址下载<a href="https://www.virtualbox.org/wiki/Downloads" target="_blank" rel="noopener">扩展包</a></p>
+<p><img src="../img/安装VirtualBox拓展包.jpg" alt="安装VirtualBox拓展包"></p>
+<p>选择下载对应VirtualBox的拓展包安装即可，最后，在全局设定—&gt;拓展中可以安装拓展包，之后在设置—系统中更改启动顺序，优先使用网路启动，如果你的网络环境支持PXE启动，就可以使用网络安装了。</p>
+
+      
+    </div>
+    
+    
+    
+    <div>
+      
+      <div>
+
+    <div style="text-align:center;color: #ccc;font-size:14px;">--------本文结束👻感谢您的阅读--------</div>
+
+</div>
+      
+    </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="苏俊强 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/IPXE/" rel="tag"> <i class="fa fa-tag"></i> IPXE</a>
+          
+        </div>
+      
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+		  <div style="color: rgba(0, 0, 0, 0.75); font-size:13px; letter-spacing:3px">(&gt;这里有小星星😘~&lt;)</div>
+            <div id="wpac-rating"></div>
+          </div>
+        
+        
+
+        
+        </div>
+      
+      
+
+      
+  <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+      
+       <a href="/2020/08/25/IPXE环境Docker化/" rel="prev" title="IPXE环境Docker化">
+         <i class="fa fa-chevron-left"></i> IPXE环境Docker化
+        </a>
+      
+    </div>
+
+    <span class="post-nav-divider"></span>
+
+    <div class="post-nav-prev post-nav-item">
+     
+       <a href="/2020/06/13/记一次Rust初学历程/" rel="next" title="初识Rust">
+        初识Rust <i class="fa fa-chevron-right"></i>
+        </a>
+      
+    </div>
+  </div>
+
+
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+
+
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+			 <a href="/">
+			<img class="site-author-image" itemprop="image" src="https://user-images.githubusercontent.com/45387793/49084566-c89de600-f28a-11e8-84d5-d7bfcad467e8.JPG" alt="苏俊强">
+			 </a>
+            
+              <p class="site-author-name" itemprop="name">苏俊强</p>
+              <p class="site-description motion-element" itemprop="description">白天有说有笑，晚上睡个好觉。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.sujunqiang.work/" target="_blank" title="About-Me">
+                      
+                        <i class="fa fa-fw fa-user"></i>About-Me</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/su-junqiang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:809962111@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/u/5874170183/home?wvr=5" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://wpa.qq.com/msgrd?v=3&uin=809962111&site=qq&menu=yes" target="_blank" title="QQ">
+                      
+                        <i class="fa fa-fw fa-qq"></i>QQ</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.lichaobao.xyz" title="Chaobao" target="_blank">Chaobao</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://pushy.site" title="Pushy" target="_blank">Pushy</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sweetqianba.com:8080" title="Yuanhao" target="_blank">Yuanhao</a>
+                  </li>
+                
+				
+              </ul>
+            </div>
+          
+
+         <div id="days"></div>
+<script>
+function show_date_time(){
+window.setTimeout("show_date_time()", 1000);
+BirthDay=new Date("11/27/2018 00:00:00");
+today=new Date();
+timeold=(today.getTime()-BirthDay.getTime());
+sectimeold=timeold/1000
+secondsold=Math.floor(sectimeold);
+msPerDay=24*60*60*1000
+e_daysold=timeold/msPerDay
+daysold=Math.floor(e_daysold);
+e_hrsold=(e_daysold-daysold)*24;
+hrsold=setzero(Math.floor(e_hrsold));
+e_minsold=(e_hrsold-hrsold)*60;
+minsold=setzero(Math.floor((e_hrsold-hrsold)*60));
+seconds=setzero(Math.floor((e_minsold-minsold)*60));
+document.getElementById('days').innerHTML="已运行"+daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒";
+}
+function setzero(i){
+if (i<10)
+{i="0" + i};
+return i;
+}
+show_date_time();
+</script>
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PXE"><span class="nav-number">2.</span> <span class="nav-text">PXE</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IPXE"><span class="nav-number">3.</span> <span class="nav-text">IPXE</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BIOS和UEFI"><span class="nav-number">4.</span> <span class="nav-text">BIOS和UEFI</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境"><span class="nav-number">4.1.</span> <span class="nav-text">环境</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LINUX下的内核文件（vmlinuz-initrd-img-System-map-）"><span class="nav-number">5.</span> <span class="nav-text">LINUX下的内核文件（vmlinuz/initrd.img/ System.map ）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vmlinuz"><span class="nav-number">5.0.1.</span> <span class="nav-text">vmlinuz</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#initrd-img"><span class="nav-number">5.0.2.</span> <span class="nav-text">initrd.img</span></a></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#启动流程"><span class="nav-number">6.</span> <span class="nav-text">启动流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IPXE-CentOS7环境配置"><span class="nav-number">7.</span> <span class="nav-text">IPXE-CentOS7环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-配置dnsmasq服务和ipxe基本环境"><span class="nav-number">7.0.1.</span> <span class="nav-text">1.配置dnsmasq服务和ipxe基本环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-设置CentOS7网络安装"><span class="nav-number">7.0.2.</span> <span class="nav-text">2.设置CentOS7网络安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-网络安装CentOS"><span class="nav-number">7.0.3.</span> <span class="nav-text">3.网络安装CentOS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-使用ks自动安装"><span class="nav-number">7.0.4.</span> <span class="nav-text">4.使用ks自动安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-补充"><span class="nav-number">7.0.5.</span> <span class="nav-text">5.补充</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PXE-CentOS7环境配置"><span class="nav-number">8.</span> <span class="nav-text">PXE-CentOS7环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装tftp服务"><span class="nav-number">8.0.1.</span> <span class="nav-text">1.安装tftp服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-安装DHCP服务"><span class="nav-number">8.0.2.</span> <span class="nav-text">2.安装DHCP服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-安装ftp服务"><span class="nav-number">8.0.3.</span> <span class="nav-text">3.安装ftp服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-编写启动菜单及复制其他文件"><span class="nav-number">8.0.4.</span> <span class="nav-text">4.编写启动菜单及复制其他文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-注释"><span class="nav-number">8.0.5.</span> <span class="nav-text">5.注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-安装"><span class="nav-number">8.0.6.</span> <span class="nav-text">6.安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题合集"><span class="nav-number">9.</span> <span class="nav-text">问题合集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-vsftpd问题合集"><span class="nav-number">9.0.1.</span> <span class="nav-text">1.vsftpd问题合集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-VirtualBox搭建环境指南"><span class="nav-number">9.0.2.</span> <span class="nav-text">2.VirtualBox搭建环境指南</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-VirtualBox中使用BIOS启动TFTP连接超时"><span class="nav-number">9.0.3.</span> <span class="nav-text">3.VirtualBox中使用BIOS启动TFTP连接超时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-VirtualBox中BIOS安装失败：“FATAL-No-bootable-medium-found-System-halted-”"><span class="nav-number">9.0.4.</span> <span class="nav-text">4.VirtualBox中BIOS安装失败：“FATAL:No bootable medium found!System halted.”</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+      
+    </div>
+	<div id="music163player">
+    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="280" height="86" src="//music.163.com/outchain/player?type=2&id=38358214&auto=0&height=66" "="">
+    </iframe>
+    </div>
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">苏俊强</span>
+
+  
+</div>
+
+<a style="color:black;ext-decoration:none;" href="http://www.beian.miit.gov.cn">晋ICP备18012846号</a>
+<div class="weixin-box">
+  <div class="weixin-menu">
+    <div class="weixin-hover">
+      <div class="weixin-description">微信扫一扫，关注本博主</div>
+    </div>
+  </div>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv"></span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.1/velocity.ui.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: '6g6SCRi3QCqKBoygYSBBKgTa-gzGzoHsz',
+        appKey: 'NisbShpRckxj9UIXxBbMJxwp',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("6g6SCRi3QCqKBoygYSBBKgTa-gzGzoHsz", "NisbShpRckxj9UIXxBbMJxwp");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 15262,
+    el: 'wpac-rating',
+    color: 'f79533'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>;
+  <script>
+ $("body").backstretch("https://user-images.githubusercontent.com/45387793/49206886-7249b800-f3ee-11e8-9eff-b6d9181a2c50.jpg");
+  </script>
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
