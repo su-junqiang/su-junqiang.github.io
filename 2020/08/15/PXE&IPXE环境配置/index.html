@@ -105,11 +105,11 @@
 <meta property="og:image" content="https://su-junqiang.github.io/img/开机动态获取IP.png">
 <meta property="og:image" content="https://su-junqiang.github.io/img/进入ipxe安装菜单.png">
 <meta property="og:image" content="https://su-junqiang.github.io/img/正式安装centos.png">
-<meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/新建虚拟网卡.jpg">
+<meta property="og:image" content="https://su-junqiang.github.io/img/新建虚拟网卡.jpg">
 <meta property="og:image" content="https://su-junqiang.github.io/img/新建虚拟网卡并配置.jpg">
 <meta property="og:image" content="https://su-junqiang.github.io/img/TFTP连接超时.jpg">
 <meta property="og:image" content="https://su-junqiang.github.io/img/安装VirtualBox拓展包.jpg">
-<meta property="og:updated_time" content="2020-09-12T03:31:01.480Z">
+<meta property="og:updated_time" content="2020-09-12T03:38:52.817Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IPXE、PXE  环境 ？？？">
 <meta name="twitter:description" content="摘要在实际工作中，我们经常会遇到这样的情况：想要安装Linux但是计算机不带光驱或软驱，或者是笔记本配置的非标准的软驱和光驱，如USB接口，在Linux安装时所引导的Linux内核一般都不会带这些接口的驱动，所以也无法通过本地安装Linux，此外，在一些场合，如机房，IT实验室，工厂生产线，有大量的计算机需要同时安装Linux，如果通过光驱的方式一个个安装，不仅效率低，也不利于维护。这是时候你就需">
@@ -736,7 +736,8 @@ window.onmouseout = function () {
 </table>
 <p>VirtualBox中默认的Host-only Adapter是DHCP自动分配地址的，即使关闭DHCP任然会自动配置网卡。综上所述我所采取的是俩张网卡来作为配置环境：NAT、新建的Host-only Adapter。其中NAT网卡用于连接外网，新建的Host-only Adapter用于Xshell连接与DHCP地址分配，实现对需要网络安装的客户机直接通信。</p>
 <ul>
-<li><p>配置Host-only Adapter网卡,新建虚拟网卡：管理-&gt;主机网络管理器-&gt;新建-&gt;选中手动配置网卡-&gt;取消DHCP服务-&gt;应用<img src="../img/新建虚拟网卡.jpg" alt="新建虚拟网卡"></p>
+<li><p>配置Host-only Adapter网卡,新建虚拟网卡：管理-&gt;主机网络管理器-&gt;新建-&gt;选中手动配置网卡-&gt;取消DHCP服务-&gt;应用</p>
+<p><img src="https://su-junqiang.github.io/img/新建虚拟网卡.jpg" alt="新建虚拟网卡"></p>
 <p>​    <img src="https://su-junqiang.github.io/img/新建虚拟网卡并配置.jpg" alt="新建虚拟网卡并配置"></p>
 </li>
 <li><p>在新建好的虚拟机设置中选择网络，选择网卡1-&gt;点击启用网络连接-&gt;连接方式选择网络地址转换（NAT）；选择网卡2-&gt;点击启用网络连接-&gt;连接方式选择仅主机网络-&gt;界面名称选择刚创建的虚拟网络。</p>
