@@ -98,7 +98,7 @@
 <meta property="og:site_name" content="-,-Reality-.">
 <meta property="og:description" content="摘要在实际工作中，我们经常会遇到这样的情况：想要安装Linux但是计算机不带光驱或软驱，或者是笔记本配置的非标准的软驱和光驱，如USB接口，在Linux安装时所引导的Linux内核一般都不会带这些接口的驱动，所以也无法通过本地安装Linux，此外，在一些场合，如机房，IT实验室，工厂生产线，有大量的计算机需要同时安装Linux，如果通过光驱的方式一个个安装，不仅效率低，也不利于维护。这是时候你就需">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/pxe%E4%BA%A4%E4%BA%92.png">
+<meta property="og:image" content="https:su-junqiang.github.io/2020/08/img/pxe%E4%BA%A4%E4%BA%92.png">
 <meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/0880c6b5041080c58d06.png">
 <meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/新建虚拟机.png">
 <meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/创建空白虚拟机.png">
@@ -109,11 +109,11 @@
 <meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/新建虚拟网卡并配置.jpg">
 <meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/TFTP连接超时.jpg">
 <meta property="og:image" content="https:su-junqiang.github.io/2020/08/15/img/安装VirtualBox拓展包.jpg">
-<meta property="og:updated_time" content="2020-09-12T03:00:30.112Z">
+<meta property="og:updated_time" content="2020-09-12T03:08:56.787Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IPXE、PXE  环境 ？？？">
 <meta name="twitter:description" content="摘要在实际工作中，我们经常会遇到这样的情况：想要安装Linux但是计算机不带光驱或软驱，或者是笔记本配置的非标准的软驱和光驱，如USB接口，在Linux安装时所引导的Linux内核一般都不会带这些接口的驱动，所以也无法通过本地安装Linux，此外，在一些场合，如机房，IT实验室，工厂生产线，有大量的计算机需要同时安装Linux，如果通过光驱的方式一个个安装，不仅效率低，也不利于维护。这是时候你就需">
-<meta name="twitter:image" content="https:su-junqiang.github.io/2020/08/15/img/pxe%E4%BA%A4%E4%BA%92.png">
+<meta name="twitter:image" content="https:su-junqiang.github.io/2020/08/img/pxe%E4%BA%A4%E4%BA%92.png">
 
 
 
@@ -599,7 +599,7 @@ window.onmouseout = function () {
 <p>作用：进程管理、内存管理、文件管理、驱动管理、网络管理。</p>
 <h3 id="initrd-img"><a href="#initrd-img" class="headerlink" title="initrd.img"></a><em>initrd.img</em></h3><p><code>initrd.img</code>是一个小<code>ramdisk(内存虚拟硬盘)</code>的映象， 放的是和启动相关的驱动模块，用一部分内存模拟成磁盘，让操作系统访问。通常的步骤是先启动内核，然后内核挂载<code>initrd.img</code>，并执行里面的脚本来进一步挂载各种各样的模块。其中最重要的就是根文件系统驱动模块，有了它才能挂载根文件系统，继而运行用户空间的第一个应用程序，完成系统后续的启动。</p>
 <h1 id="启动流程"><a href="#启动流程" class="headerlink" title="启动流程"></a>启动流程</h1><p>大体流程：客户机从DHCP(获取IP，寻找iPXE服务器)&gt;tftp获取开机启动文件&gt;HTTP/TFTP/FTP（加载安装文件）&gt;本地安装</p>
-<p><img src="../img/pxe%E4%BA%A4%E4%BA%92.png" alt="pxe客户端服务端交互"></p>
+<p><img src="../../img/pxe%E4%BA%A4%E4%BA%92.png" alt="pxe客户端服务端交互"></p>
 <p><img src="../img/0880c6b5041080c58d06.png" alt="0880c6b5041080c58d06"></p>
 <h1 id="IPXE-CentOS7环境配置"><a href="#IPXE-CentOS7环境配置" class="headerlink" title="IPXE-CentOS7环境配置"></a>IPXE-CentOS7环境配置</h1><h3 id="1-配置dnsmasq服务和ipxe基本环境"><a href="#1-配置dnsmasq服务和ipxe基本环境" class="headerlink" title="1.配置dnsmasq服务和ipxe基本环境"></a>1.配置dnsmasq服务和ipxe基本环境</h3><p>本次预装CentOS的网络适配器选择的是VMnet8（NAT）模式，配置<code>dnsmasq</code>服务和<code>ipxe</code>基本环境安装需要的包：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y ipxe-bootimgs dnsmasq</span><br></pre></td></tr></table></figure>
